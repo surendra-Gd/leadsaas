@@ -1,0 +1,17 @@
+{
+  "google_places_api_key": "TEST_KEY",
+  "google_sheets_webhook_url": "https://new.url/webhook",
+  "business_categories": [
+    "Salons"
+  ],
+  "locations": [
+    "Mumbai, India"
+  ],
+  "daily_lead_limit": 5,
+  "max_results_per_query": 5,
+  "max_pages_per_query": 1,
+  "rate_limit_delay": 0.0,
+  "max_api_calls_per_minute": 45,
+  "max_api_calls_per_run": 0,
+  "active_city": ""
+}

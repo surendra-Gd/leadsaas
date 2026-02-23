@@ -1,14 +1,12 @@
-# API layer
-fastapi>=0.111.0
-uvicorn[standard]>=0.29.0
-pydantic>=2.7.0
+# LeadRadar v3 — Webhook Edition
+# No gspread or google-auth needed anymore.
 
-# HTTP client
+# HTTP client — Places API calls + webhook POSTs
 requests>=2.31.0
 
-# Google Sheets
-gspread>=6.0.0
-google-auth>=2.22.0
+# Web framework + server
+fastapi>=0.111.0
+uvicorn[standard]>=0.29.0
 
-# Scheduling (optional — for standalone cron-style runs)
-schedule>=1.2.2
+# Data validation for FastAPI request schemas
+pydantic>=2.0.0

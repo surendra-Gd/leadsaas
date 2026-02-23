@@ -1,0 +1,921 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>LeadRadar — Dashboard</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.development.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.development.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.2/babel.min.js"></script>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+const { useState, useRef, useEffect } = React;
+
+/* ── Icons ── */
+const P = {
+  activity:   "M22 12h-4l-3 9L9 3l-3 9H2",
+  zap:        "M13 2L3 14h9l-1 8 10-12h-9l1-8z",
+  pin:        ["M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z","M12 7a3 3 0 1 0 0 6 3 3 0 0 0 0-6"],
+  trending:   ["M23 6l-9.5 9.5-5-5L1 17","M17 6h6v6"],
+  settings:   ["M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6","M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"],
+  play:       "M5 3l14 9-14 9V3z",
+  stopSq:     "M3 3h18v18H3z",
+  refresh:    ["M23 4v6h-6","M1 20v-6h6","M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"],
+  chevL:      "M15 18l-6-6 6-6",
+  chevR:      "M9 18l6-6-6-6",
+  search:     ["M11 4a7 7 0 1 0 0 14A7 7 0 0 0 11 4z","M21 21l-4.35-4.35"],
+  phone:      "M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13.4 19.79 19.79 0 0 1 1.61 4.83 2 2 0 0 1 3.59 2.64h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 10.1a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21.73 17z",
+  tag:        ["M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z","M7 7h.01"],
+  checkCircle:"M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20zM9 12l2 2 4-4",
+  alert:      ["M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z","M12 9v4","M12 17h.01"],
+  clock:      ["M12 2a10 10 0 1 0 0 20A10 10 0 0 0 12 2z","M12 6v6l4 2"],
+  eyeOn:      ["M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z","M12 9a3 3 0 1 0 0 6 3 3 0 0 0 0-6"],
+  eyeOff:     ["M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24","M1 1l22 22"],
+  save:       ["M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z","M17 21v-8H7v8","M7 3v5h8"],
+  bar:        ["M3 3v18h18","M18 17V9","M13 17V5","M8 17v-3"],
+  globe:      ["M12 2a10 10 0 1 0 0 20A10 10 0 0 0 12 2z","M2 12h20","M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"],
+  layers:     ["M12 2L2 7l10 5 10-5-10-5z","M2 17l10 5 10-5","M2 12l10 5 10-5"],
+  list:       ["M8 6h13","M8 12h13","M8 18h13","M3 6h.01","M3 12h.01","M3 18h.01"],
+  plus:       ["M12 5v14","M5 12h14"],
+  trash:      ["M3 6h18","M19 6l-1 14H6L5 6","M9 6V4h6v2","M10 11v6","M14 11v6"],
+  edit:       ["M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7","M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"],
+  msg:        ["M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"],
+  copy:       ["M20 9h-9a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2-2v-9a2 2 0 0 0-2-2z","M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 0 2 2v1"],
+  grid:       ["M3 3h7v7H3z","M14 3h7v7h-7z","M3 14h7v7H3z","M14 14h7v7h-7z"],
+  send:       ["M22 2L11 13","M22 2L15 22l-4-9-9-4 20-7z"],
+  xIcon:      ["M18 6L6 18","M6 6l12 12"],
+  info:       ["M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20z","M12 8h.01","M12 12v4"],
+};
+
+function Ic({ k, size=16, sw=2, className="", style={}, fill="none" }) {
+  const paths = Array.isArray(P[k]) ? P[k] : [P[k]];
+  return (
+    <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size}
+      viewBox="0 0 24 24" fill={fill} stroke="currentColor"
+      strokeWidth={sw} strokeLinecap="round" strokeLinejoin="round"
+      className={className} style={style}>
+      {paths.map(function(d,i){ return <path key={i} d={d}/>; })}
+    </svg>
+  );
+}
+
+/* ── Data ── */
+const INIT_CATS = [
+  { id:"c1", name:"Salons",        emoji:"✂️", color:"#8b5cf6", count:47, active:true  },
+  { id:"c2", name:"Bakeries",      emoji:"🥐", color:"#f59e0b", count:33, active:true  },
+  { id:"c3", name:"Clinics",       emoji:"🏥", color:"#10b981", count:28, active:true  },
+  { id:"c4", name:"Restaurants",   emoji:"🍽️", color:"#ef4444", count:61, active:true  },
+  { id:"c5", name:"Tailors",       emoji:"🧵", color:"#3b82f6", count:19, active:true  },
+  { id:"c6", name:"Photographers", emoji:"📷", color:"#ec4899", count:15, active:false },
+  { id:"c7", name:"Plumbers",      emoji:"🔧", color:"#0ea5e9", count:22, active:true  },
+  { id:"c8", name:"Electricians",  emoji:"⚡", color:"#f97316", count:18, active:true  },
+  { id:"c9", name:"Tutors",        emoji:"📚", color:"#06b6d4", count:24, active:false },
+  { id:"c10",name:"Gyms",          emoji:"🏋️", color:"#84cc16", count:11, active:true  },
+];
+
+const INIT_TPLS = [
+  { id:"t1", name:"Classic Cold Outreach", tag:"outreach", subject:"Grow your business online — quick intro",
+    body:"Hi {{name}},\n\nI came across {{business_name}} and noticed you don't have a website yet. In today's market, a simple website can bring in {{category}} customers who are searching online every day.\n\nI help local businesses like yours get online quickly and affordably. Would you be open to a quick 10-minute call this week?\n\nBest,\n{{sender_name}}",
+    variables:["name","business_name","category","sender_name"], sentCount:142, replyRate:18, createdAt:"2025-01-15" },
+  { id:"t2", name:"Soft Follow-Up", tag:"followup", subject:"Just checking in — {{business_name}}",
+    body:"Hey {{name}},\n\nJust following up on my previous message. I wanted to make sure it didn't get lost!\n\nI genuinely think a website could make a big difference for {{business_name}}. Many {{category}} owners I've worked with saw new customer enquiries within the first month.\n\nNo pressure at all — just let me know if you'd like to chat.\n\nCheers,\n{{sender_name}}",
+    variables:["name","business_name","category","sender_name"], sentCount:89, replyRate:24, createdAt:"2025-01-28" },
+  { id:"t3", name:"Value-First Approach", tag:"value", subject:"Free website audit for {{business_name}}",
+    body:"Hello {{name}},\n\nI'd love to offer {{business_name}} a completely free online presence report — no strings attached.\n\nThe report covers:\n• What customers see when they search for {{category}} in your area\n• 3 quick wins to get more local visibility\n• Whether a website would be worth it for your business\n\nTakes me 10 minutes to prepare and costs you nothing. Interested?\n\n{{sender_name}}",
+    variables:["name","business_name","category","sender_name"], sentCount:56, replyRate:31, createdAt:"2025-02-03" },
+  { id:"t4", name:"WhatsApp Short DM", tag:"whatsapp", subject:"",
+    body:"Hi {{name}} 👋 I noticed {{business_name}} doesn't have a website. I help {{category}} owners get found on Google — takes just 3 days to set up. Interested in knowing more?",
+    variables:["name","business_name","category"], sentCount:203, replyRate:22, createdAt:"2025-02-10" },
+];
+
+const MOCK_LEADS = [
+  { place_id:"p1",  name:"Ravi Kumar Tailors",     category:"Tailors",       phone:"+91 98765 43210", location:"Hyderabad, India", discovered_at:"2025-02-23T03:12:00Z" },
+  { place_id:"p2",  name:"Nandini Bakery",          category:"Bakeries",      phone:"+91 87654 32109", location:"Chennai, India",   discovered_at:"2025-02-23T02:55:00Z" },
+  { place_id:"p3",  name:"City Dental Clinic",      category:"Clinics",       phone:"",               location:"Pune, India",       discovered_at:"2025-02-22T11:10:00Z" },
+  { place_id:"p4",  name:"Green Leaf Salon",        category:"Salons",        phone:"+91 76543 21098", location:"Hyderabad, India", discovered_at:"2025-02-22T09:44:00Z" },
+  { place_id:"p5",  name:"Bharath Electricals",     category:"Electricians",  phone:"+91 65432 10987", location:"Jaipur, India",    discovered_at:"2025-02-21T16:30:00Z" },
+  { place_id:"p6",  name:"Elite Photographers",     category:"Photographers", phone:"+91 99887 76655", location:"Lucknow, India",   discovered_at:"2025-02-21T14:22:00Z" },
+  { place_id:"p7",  name:"Sunrise Gym",             category:"Gyms",          phone:"+91 90909 09090", location:"Chennai, India",   discovered_at:"2025-02-21T10:00:00Z" },
+  { place_id:"p8",  name:"Meera Home Tutors",       category:"Tutors",        phone:"+91 80808 08080", location:"Pune, India",      discovered_at:"2025-02-20T18:45:00Z" },
+  { place_id:"p9",  name:"Annapurna Sweet House",   category:"Bakeries",      phone:"+91 70707 07070", location:"Jaipur, India",    discovered_at:"2025-02-20T15:30:00Z" },
+  { place_id:"p10", name:"Quick Fix Plumbers",      category:"Plumbers",      phone:"+91 60606 06060", location:"Hyderabad, India", discovered_at:"2025-02-20T12:15:00Z" },
+  { place_id:"p11", name:"Laxmi Beauty Parlour",    category:"Salons",        phone:"+91 55554 44433", location:"Lucknow, India",   discovered_at:"2025-02-19T09:00:00Z" },
+  { place_id:"p12", name:"Balaji Eye Clinic",       category:"Clinics",       phone:"+91 44443 33322", location:"Chennai, India",   discovered_at:"2025-02-19T07:30:00Z" },
+  { place_id:"p13", name:"Sharma Photography",      category:"Photographers", phone:"",               location:"Pune, India",       discovered_at:"2025-02-18T16:00:00Z" },
+  { place_id:"p14", name:"Power Fit Gym",           category:"Gyms",          phone:"+91 33332 22211", location:"Jaipur, India",    discovered_at:"2025-02-18T14:00:00Z" },
+  { place_id:"p15", name:"Krishna Bakery",          category:"Bakeries",      phone:"+91 22221 11100", location:"Hyderabad, India", discovered_at:"2025-02-18T11:45:00Z" },
+  { place_id:"p16", name:"Suresh AC Repairs",       category:"Electricians",  phone:"+91 11110 00099", location:"Lucknow, India",   discovered_at:"2025-02-17T09:20:00Z" },
+  { place_id:"p17", name:"The Hair Studio",         category:"Salons",        phone:"+91 98123 45678", location:"Chennai, India",   discovered_at:"2025-02-17T08:00:00Z" },
+  { place_id:"p18", name:"Bright Kids Tuition",     category:"Tutors",        phone:"+91 97123 45678", location:"Pune, India",      discovered_at:"2025-02-16T17:00:00Z" },
+  { place_id:"p19", name:"Metro Plumbing Co.",      category:"Plumbers",      phone:"+91 96123 45678", location:"Jaipur, India",    discovered_at:"2025-02-16T14:30:00Z" },
+  { place_id:"p20", name:"Heritage Photo Studio",   category:"Photographers", phone:"+91 95123 45678", location:"Hyderabad, India", discovered_at:"2025-02-15T12:00:00Z" },
+  { place_id:"p21", name:"Fit Zone Gym",            category:"Gyms",          phone:"+91 94123 45678", location:"Lucknow, India",   discovered_at:"2025-02-15T10:00:00Z" },
+  { place_id:"p22", name:"Daily Fresh Bakery",      category:"Bakeries",      phone:"",               location:"Chennai, India",    discovered_at:"2025-02-14T08:30:00Z" },
+  { place_id:"p23", name:"MedPlus Clinic",          category:"Clinics",       phone:"+91 93123 45678", location:"Pune, India",      discovered_at:"2025-02-14T07:00:00Z" },
+  { place_id:"p24", name:"Royal Cuts Salon",        category:"Salons",        phone:"+91 92123 45678", location:"Jaipur, India",    discovered_at:"2025-02-13T16:45:00Z" },
+];
+
+const CITIES       = ["Hyderabad, India","Chennai, India","Pune, India","Jaipur, India","Lucknow, India","Bengaluru, India","Mumbai, India","Delhi, India"];
+const EMOJIS       = ["✂️","🥐","🏥","🍽️","🧵","📷","🔧","⚡","📚","🏋️","💇","🎨","🚗","🌿","💊","🐾","🍕","☕","🎵","🏠"];
+const COLORS       = ["#8b5cf6","#f59e0b","#10b981","#ef4444","#3b82f6","#ec4899","#0ea5e9","#f97316","#06b6d4","#84cc16","#6366f1","#14b8a6"];
+const TAG_OPTS     = ["outreach","followup","value","whatsapp","email","sms","linkedin"];
+const TAG_CLR      = { outreach:"#6366f1", followup:"#f59e0b", value:"#10b981", whatsapp:"#25d366", email:"#3b82f6", sms:"#ec4899", linkedin:"#0077b5" };
+const PAGE_SIZE    = 10;
+const fmt          = function(n){ return (n||0).toLocaleString(); };
+
+/* ── Shared ── */
+function StatusDot(props) {
+  var running = props.running;
+  return (
+    React.createElement("span", { style:{ position:"relative", display:"inline-flex", alignItems:"center" } },
+      running && React.createElement("span", { style:{ position:"absolute", inset:0, borderRadius:"50%", background:"#22c55e", animation:"ping 1.4s ease infinite" } }),
+      React.createElement("span", { style:{ width:10, height:10, borderRadius:"50%", background: running ? "#22c55e" : "#94a3b8", display:"inline-block", position:"relative", boxShadow: running ? "0 0 0 2px #dcfce7" : "none", transition:"all .3s" } })
+    )
+  );
+}
+
+function Toast(props) {
+  useEffect(function(){ var t = setTimeout(props.onDone, 2200); return function(){ clearTimeout(t); }; }, []);
+  return <div className="toast"><Ic k="checkCircle" size={14}/>{props.msg}</div>;
+}
+
+function Modal(props) {
+  function handleBackdrop(e) { if (e.target === e.currentTarget) props.onClose(); }
+  return (
+    <div className="modal-backdrop" onClick={handleBackdrop}>
+      <div className="modal">
+        <div className="modal-header">
+          <h3>{props.title}</h3>
+          <button className="modal-close" onClick={props.onClose}><Ic k="xIcon" size={16}/></button>
+        </div>
+        <div className="modal-body">{props.children}</div>
+      </div>
+    </div>
+  );
+}
+
+function VarPill(props) {
+  return <span style={{ display:"inline-flex", alignItems:"center", gap:3, padding:"1px 8px", borderRadius:5, background:"#fef3c7", color:"#92400e", fontSize:".7rem", fontWeight:700, fontFamily:"monospace" }}>{"{{"}{props.v}{"}}"}</span>;
+}
+
+/* ══════════════════════════════
+   TAB 1 — DASHBOARD
+══════════════════════════════ */
+function StatCard(props) {
+  return (
+    <div className="stat-card" style={{ "--accent": props.accent }}>
+      <div className="stat-card__icon"><Ic k={props.iconKey} size={18} sw={2}/></div>
+      <div>
+        <p className="stat-label">{props.label}</p>
+        <p className="stat-value">{props.value}</p>
+        {props.sub && <p className="stat-sub">{props.sub}</p>}
+      </div>
+    </div>
+  );
+}
+
+function BotControl(props) {
+  var cls = "bot-btn " + (props.running ? "bot-stop" : "bot-start");
+  return (
+    <button onClick={props.onToggle} disabled={props.loading} className={cls}>
+      {props.loading ? <Ic k="refresh" size={16} className="spin"/> : props.running ? <Ic k="stopSq" size={15} fill="currentColor"/> : <Ic k="play" size={15} fill="currentColor"/>}
+      <StatusDot running={props.running}/>
+      <span>{props.loading ? "Processing…" : props.running ? "Stop Bot" : "Start Bot"}</span>
+    </button>
+  );
+}
+
+function ConfigPanel(props) {
+  var cfg = props.config;
+  var onSave = props.onSave;
+  var _s1 = useState(cfg.apiKey);    var apiKey = _s1[0]; var setApiKey = _s1[1];
+  var _s2 = useState(cfg.sheetId);   var sheetId = _s2[0]; var setSheetId = _s2[1];
+  var _s3 = useState(cfg.dailyLimit);var limit = _s3[0]; var setLimit = _s3[1];
+  var _s4 = useState(false);         var showKey = _s4[0]; var setShowKey = _s4[1];
+  var _s5 = useState(false);         var saving = _s5[0]; var setSaving = _s5[1];
+  var _s6 = useState(false);         var saved = _s6[0]; var setSaved = _s6[1];
+
+  function doSave() {
+    setSaving(true);
+    setTimeout(function(){
+      onSave({ apiKey:apiKey, sheetId:sheetId, dailyLimit:limit });
+      setSaving(false); setSaved(true);
+      setTimeout(function(){ setSaved(false); }, 2000);
+    }, 700);
+  }
+
+  return (
+    <div className="panel">
+      <div className="panel-hdr"><Ic k="settings" size={16}/><h2>Configuration</h2></div>
+      <div style={{ padding:"16px 20px", display:"flex", flexDirection:"column", gap:14 }}>
+        <div className="field">
+          <label className="flabel">Google Places API Key</label>
+          <div style={{ display:"flex", gap:6 }}>
+            <input type={showKey?"text":"password"} value={apiKey} onChange={function(e){setApiKey(e.target.value);}} placeholder="AIzaSy…" className="finput"/>
+            <button className="icon-sq" onClick={function(){setShowKey(function(s){return !s;});}}><Ic k={showKey?"eyeOff":"eyeOn"} size={15}/></button>
+          </div>
+        </div>
+        <div className="field">
+          <label className="flabel">Google Sheet ID</label>
+          <input type="text" value={sheetId} onChange={function(e){setSheetId(e.target.value);}} placeholder="1BxiM…" className="finput"/>
+        </div>
+        <div className="field">
+          <label className="flabel" style={{ display:"flex", justifyContent:"space-between" }}>
+            Daily Lead Limit <span className="badge-i">{limit}</span>
+          </label>
+          <input type="range" min={5} max={500} step={5} value={limit} onChange={function(e){setLimit(+e.target.value);}} className="fslider"/>
+          <div style={{ display:"flex", justifyContent:"space-between", fontSize:".68rem", color:"var(--t3)", fontWeight:600, marginTop:2 }}><span>5</span><span>500</span></div>
+        </div>
+      </div>
+      <div style={{ padding:"0 20px 16px" }}>
+        <button className="btn-primary" style={{ width:"100%" }} onClick={doSave} disabled={saving}>
+          <Ic k={saving?"refresh":saved?"checkCircle":"save"} size={14} className={saving?"spin":""}/>
+          {saving?"Saving…":saved?"Saved!":"Save Config"}
+        </button>
+      </div>
+    </div>
+  );
+}
+
+function CityToggle(props) {
+  var activeCity = props.activeCity; var onSwitch = props.onSwitch;
+  return (
+    <div className="panel">
+      <div className="panel-hdr"><Ic k="pin" size={16}/><h2>Active Location</h2></div>
+      <div style={{ padding:"12px 20px", display:"flex", flexWrap:"wrap", gap:7 }}>
+        {CITIES.map(function(city){
+          var short = city.split(",")[0];
+          var active = activeCity === city;
+          return (
+            <button key={city} onClick={function(){ onSwitch(active?"":city); }} className={"chip "+(active?"chip-active":"")}>
+              <Ic k="globe" size={11}/>{short}
+            </button>
+          );
+        })}
+      </div>
+      <div style={{ padding:"0 20px 10px", fontSize:".71rem", color:"var(--t3)", display:"flex", alignItems:"center", gap:5 }}>
+        <Ic k="info" size={12}/>
+        {activeCity ? "Filtering: "+activeCity.split(",")[0] : "All cities active — click to focus"}
+      </div>
+      {activeCity && <div style={{ padding:"0 20px 14px" }}><button className="btn-ghost" onClick={function(){ onSwitch(""); }}>Clear filter</button></div>}
+    </div>
+  );
+}
+
+function LeadTable(props) {
+  var leads = props.leads;
+  var _p = useState(1); var page = _p[0]; var setPage = _p[1];
+  var _q = useState(""); var search = _q[0]; var setSearch = _q[1];
+  var prevQ = useRef(search);
+  if (prevQ.current !== search) { prevQ.current = search; if (page !== 1) setPage(1); }
+
+  var filtered = leads.filter(function(l){
+    if (!search) return true;
+    var q = search.toLowerCase();
+    return (l.name+l.category+l.location+l.phone).toLowerCase().indexOf(q) !== -1;
+  });
+  var total = filtered.length;
+  var pages = Math.max(1, Math.ceil(total/PAGE_SIZE));
+  var start = (page-1)*PAGE_SIZE;
+  var slice = filtered.slice(start, start+PAGE_SIZE);
+  var lo = Math.max(1,page-2); var hi = Math.min(pages,lo+4);
+  var pnums = []; for (var x=lo;x<=hi;x++) pnums.push(x);
+
+  return (
+    <div className="panel">
+      <div className="panel-hdr">
+        <Ic k="list" size={16}/><h2>Leads</h2>
+        <span className="badge-i" style={{ marginLeft:4 }}>{fmt(total)}</span>
+        <div className="search-box" style={{ marginLeft:"auto" }}>
+          <Ic k="search" size={13}/>
+          <input value={search} onChange={function(e){setSearch(e.target.value);}} placeholder="Search leads…" className="search-input"/>
+        </div>
+      </div>
+      <div style={{ overflowX:"auto" }}>
+        {slice.length===0
+          ? <div className="tbl-empty"><Ic k="layers" size={22} style={{ opacity:.3 }}/>No leads found</div>
+          : <table className="tbl">
+              <thead><tr>
+                <th><span><Ic k="tag" size={11}/>Category</span></th>
+                <th><span><Ic k="search" size={11}/>Name</span></th>
+                <th><span><Ic k="phone" size={11}/>Phone</span></th>
+                <th><span><Ic k="pin" size={11}/>City</span></th>
+                <th><span><Ic k="clock" size={11}/>Found</span></th>
+                <th><span><Ic k="checkCircle" size={11}/>Status</span></th>
+              </tr></thead>
+              <tbody>{slice.map(function(lead,idx){
+                return (
+                  <tr key={lead.place_id} className="trow" style={{ animationDelay:(idx*30)+"ms" }}>
+                    <td><span className="cat-tag">{lead.category}</span></td>
+                    <td className="name-cell">{lead.name}</td>
+                    <td className="mono small">{lead.phone || <span className="t3">N/A</span>}</td>
+                    <td className="t3 small">{lead.location.split(",")[0]}</td>
+                    <td className="t3 small mono">{new Date(lead.discovered_at).toLocaleDateString("en-IN",{day:"numeric",month:"short"})}</td>
+                    <td><span className="status-pill">Qualified</span></td>
+                  </tr>
+                );
+              })}</tbody>
+            </table>
+        }
+      </div>
+      {total > PAGE_SIZE && (
+        <div className="pagination">
+          <span className="t3 small">{start+1}–{Math.min(start+PAGE_SIZE,total)} of {fmt(total)}</span>
+          <div style={{ display:"flex", gap:4 }}>
+            <button className="pag-btn" disabled={page===1} onClick={function(){setPage(function(p){return p-1;});}}><Ic k="chevL" size={13}/></button>
+            {pnums.map(function(n){ return <button key={n} className={"pag-btn "+(n===page?"pag-active":"")} onClick={function(){setPage(n);}}>{n}</button>; })}
+            <button className="pag-btn" disabled={page===pages} onClick={function(){setPage(function(p){return p+1;});}}><Ic k="chevR" size={13}/></button>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function DashboardTab(props) {
+  var running = props.running; var onToggle = props.onToggle;
+  var activeCity = props.activeCity; var onCitySwitch = props.onCitySwitch;
+  var config = props.config; var onConfigSave = props.onConfigSave;
+  var leadsToday=12; var leadsTotal=347; var callsToday=89;
+  var pct = Math.min(100,Math.round(leadsToday/config.dailyLimit*100));
+  var filteredLeads = activeCity ? MOCK_LEADS.filter(function(l){return l.location===activeCity;}) : MOCK_LEADS;
+
+  return (
+    <div>
+      <div className="stats-row">
+        <StatCard iconKey="trending"   label="Daily Leads"      value={leadsToday+" / "+config.dailyLimit} sub={pct+"% of quota"} accent="#6366f1"/>
+        <StatCard iconKey="layers"     label="Total Leads"      value={fmt(leadsTotal)} sub="all time"       accent="#0ea5e9"/>
+        <StatCard iconKey="zap"        label="API Calls Today"  value={fmt(callsToday)} sub="Places API (New)" accent="#f59e0b"/>
+        <StatCard iconKey="pin"        label="Active City"      value={activeCity?activeCity.split(",")[0]:"All Cities"} sub={activeCity?"filtered":"no filter"} accent="#10b981"/>
+      </div>
+      <div className="main-grid">
+        <div className="col">
+          <div className="panel">
+            <div className="panel-hdr"><Ic k="bar" size={16}/><h2>Today's Progress</h2></div>
+            <div style={{ padding:"16px 20px 8px" }}>
+              <div style={{ display:"flex", justifyContent:"space-between", fontSize:".75rem", fontWeight:600, color:"var(--t2)", marginBottom:8 }}>
+                <span>Daily quota</span><span className="mono">{leadsToday} / {config.dailyLimit}</span>
+              </div>
+              <div className="prog-track"><div className="prog-fill" style={{ width:pct+"%" }}/></div>
+              <div style={{ fontSize:".69rem", color:"var(--t3)", marginTop:5, fontWeight:600 }}>{pct}% complete</div>
+            </div>
+            <div className="api-stat"><Ic k="zap" size={13}/><span>API calls today</span><span className="mono" style={{ marginLeft:"auto", color:"var(--amber)" }}>{fmt(callsToday)}</span></div>
+          </div>
+          <ConfigPanel config={config} onSave={onConfigSave}/>
+          <CityToggle activeCity={activeCity} onSwitch={onCitySwitch}/>
+        </div>
+        <div style={{ flex:1, minWidth:0 }}>
+          <LeadTable leads={filteredLeads}/>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ══════════════════════════════
+   TAB 2 — CATEGORIES
+══════════════════════════════ */
+function CatModal(props) {
+  var cat = props.cat; var onClose = props.onClose; var onSave = props.onSave;
+  var isNew = !cat;
+  var _n = useState(cat?cat.name:"");     var name=_n[0]; var setName=_n[1];
+  var _e = useState(cat?cat.emoji:"🏢"); var emoji=_e[0]; var setEmoji=_e[1];
+  var _c = useState(cat?cat.color:"#6366f1"); var color=_c[0]; var setColor=_c[1];
+  function doSave() {
+    if (!name.trim()) return;
+    onSave({ id: cat?cat.id:("c_"+Date.now()), name:name.trim(), emoji:emoji, color:color, count:cat?cat.count:0, active:cat?cat.active:true });
+    onClose();
+  }
+  return (
+    <Modal title={isNew?"Add Category":"Edit Category"} onClose={onClose}>
+      <div style={{ display:"flex", flexDirection:"column", gap:16 }}>
+        <div className="field">
+          <label className="flabel">Category Name</label>
+          <input className="finput" value={name} onChange={function(e){setName(e.target.value);}} placeholder="e.g. Florists"/>
+        </div>
+        <div className="field">
+          <label className="flabel">Emoji Icon</label>
+          <div style={{ display:"flex", flexWrap:"wrap", gap:6 }}>
+            {EMOJIS.map(function(em){
+              return <button key={em} onClick={function(){setEmoji(em);}} style={{ width:36, height:36, borderRadius:9, border:em===emoji?"2px solid var(--indigo)":"1px solid var(--border)", background:em===emoji?"var(--indigo-lt)":"var(--bg)", fontSize:18, cursor:"pointer", transition:"all .15s" }}>{em}</button>;
+            })}
+          </div>
+        </div>
+        <div className="field">
+          <label className="flabel">Accent Color</label>
+          <div style={{ display:"flex", flexWrap:"wrap", gap:6 }}>
+            {COLORS.map(function(c){
+              return <button key={c} onClick={function(){setColor(c);}} style={{ width:28, height:28, borderRadius:"50%", background:c, border:c===color?"3px solid var(--t1)":"2px solid transparent", cursor:"pointer", transition:"all .15s", boxShadow:c===color?"0 0 0 2px white, 0 0 0 4px "+c:"none" }}/>;
+            })}
+          </div>
+        </div>
+        <div style={{ display:"flex", gap:8, justifyContent:"flex-end", marginTop:4 }}>
+          <button className="btn-ghost" onClick={onClose}>Cancel</button>
+          <button className="btn-primary" onClick={doSave} disabled={!name.trim()}>
+            <Ic k="save" size={14}/>{isNew?"Add Category":"Save Changes"}
+          </button>
+        </div>
+      </div>
+    </Modal>
+  );
+}
+
+function CategoriesTab(props) {
+  var toast = props.toast;
+  var _c = useState(INIT_CATS); var cats=_c[0]; var setCats=_c[1];
+  var _e = useState(null);      var editCat=_e[0]; var setEditCat=_e[1];
+  var _a = useState(false);     var showAdd=_a[0]; var setShowAdd=_a[1];
+  var _s = useState("");        var search=_s[0]; var setSearch=_s[1];
+
+  var filtered = cats.filter(function(c){ return !search || c.name.toLowerCase().indexOf(search.toLowerCase())!==-1; });
+  var activeCount = cats.filter(function(c){return c.active;}).length;
+  var totalLeads  = cats.reduce(function(a,c){return a+c.count;},0);
+
+  function doToggle(id) { setCats(function(cs){return cs.map(function(c){return c.id===id?{id:c.id,name:c.name,emoji:c.emoji,color:c.color,count:c.count,active:!c.active}:c;});}); }
+  function doDelete(id) { setCats(function(cs){return cs.filter(function(c){return c.id!==id;});}); }
+  function doSave(updated) {
+    setCats(function(cs){
+      var exists = cs.some(function(c){return c.id===updated.id;});
+      if (exists) return cs.map(function(c){return c.id===updated.id?updated:c;});
+      return cs.concat([updated]);
+    });
+    toast(updated.id.indexOf("c_")===0?"Category added!":"Category updated!");
+  }
+
+  return (
+    <div>
+      <div className="section-topbar">
+        <div>
+          <h2 className="sec-title">Search Categories</h2>
+          <p className="sec-sub">{activeCount} of {cats.length} active — bot scrapes these on each run</p>
+        </div>
+        <div style={{ display:"flex", gap:10, alignItems:"center", flexWrap:"wrap" }}>
+          <div className="search-box"><Ic k="search" size={13}/><input value={search} onChange={function(e){setSearch(e.target.value);}} placeholder="Filter…" className="search-input"/></div>
+          <button className="btn-primary" onClick={function(){setEditCat(null);setShowAdd(true);}}><Ic k="plus" size={14}/>Add Category</button>
+        </div>
+      </div>
+
+      <div className="cat-stats-bar">
+        <div className="cs-item"><span className="cs-num">{cats.length}</span><span className="t3 small">Total</span></div>
+        <div className="cs-div"/>
+        <div className="cs-item"><span className="cs-num" style={{color:"#22c55e"}}>{activeCount}</span><span className="t3 small">Active</span></div>
+        <div className="cs-div"/>
+        <div className="cs-item"><span className="cs-num" style={{color:"#94a3b8"}}>{cats.length-activeCount}</span><span className="t3 small">Paused</span></div>
+        <div className="cs-div"/>
+        <div className="cs-item"><span className="cs-num">{fmt(totalLeads)}</span><span className="t3 small">Total Leads</span></div>
+      </div>
+
+      <div className="cat-grid">
+        {filtered.map(function(cat){
+          return (
+            <div key={cat.id} className={"cat-card"+(cat.active?"":" cat-off")}>
+              <div style={{ display:"flex", alignItems:"center", gap:12, marginBottom:12 }}>
+                <div style={{ width:42, height:42, borderRadius:10, display:"flex", alignItems:"center", justifyContent:"center", fontSize:20, background:cat.color+"22", border:"1.5px solid "+cat.color+"44", flexShrink:0 }}>{cat.emoji}</div>
+                <div style={{ flex:1, minWidth:0 }}>
+                  <div style={{ fontWeight:700, fontSize:".9rem", color:"var(--t1)" }}>{cat.name}</div>
+                  <div style={{ fontSize:".71rem", color:"var(--t3)", marginTop:2 }}>{fmt(cat.count)} leads found</div>
+                </div>
+                <div style={{ display:"flex", gap:5, flexShrink:0 }}>
+                  <button className="icon-sq-sm" onClick={function(){setEditCat(cat);setShowAdd(false);}}><Ic k="edit" size={13}/></button>
+                  <button className="icon-sq-sm dang" onClick={function(){doDelete(cat.id);}}><Ic k="trash" size={13}/></button>
+                </div>
+              </div>
+              <div style={{ display:"flex", alignItems:"center", gap:8, paddingTop:10, borderTop:"1px solid var(--bs)" }}>
+                <div style={{ width:10, height:10, borderRadius:"50%", background:cat.color, flexShrink:0 }}/>
+                <span className="t3 small">{cat.color}</span>
+                <button className={"tog-btn "+(cat.active?"tog-on":"tog-off")} onClick={function(){doToggle(cat.id);}}>
+                  <span className="tog-knob"/>
+                </button>
+              </div>
+            </div>
+          );
+        })}
+        <button className="cat-add-tile" onClick={function(){setEditCat(null);setShowAdd(true);}}>
+          <div style={{ width:44, height:44, borderRadius:11, background:"var(--bs)", display:"grid", placeItems:"center" }}><Ic k="plus" size={22}/></div>
+          <span>Add Category</span>
+        </button>
+      </div>
+
+      {(showAdd||editCat) && <CatModal cat={editCat} onClose={function(){setShowAdd(false);setEditCat(null);}} onSave={doSave}/>}
+    </div>
+  );
+}
+
+/* ══════════════════════════════
+   TAB 3 — DM TEMPLATES
+══════════════════════════════ */
+function TplPreview(props) {
+  var tpl = props.tpl; var onClose = props.onClose;
+  var rendered = (function(){
+    var b = tpl.body;
+    var sub = { name:"Ravi Kumar", business_name:"Ravi Kumar Tailors", category:"tailors", sender_name:"Priya" };
+    Object.keys(sub).forEach(function(k){ b = b.split("{{"+k+"}}").join(sub[k]); });
+    return b;
+  })();
+  var _cp = useState(false); var copied=_cp[0]; var setCopied=_cp[1];
+  function doCopy() {
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(rendered).then(function(){ setCopied(true); setTimeout(function(){setCopied(false);},1800); });
+    }
+  }
+  return (
+    <Modal title={"Preview — "+tpl.name} onClose={onClose}>
+      <div style={{ display:"flex", flexDirection:"column", gap:14 }}>
+        {tpl.subject && (
+          <div>
+            <div className="flabel" style={{ marginBottom:5 }}>Subject Line</div>
+            <div style={{ padding:"9px 12px", background:"var(--bg)", borderRadius:9, border:"1px solid var(--border)", fontSize:".82rem", fontWeight:600 }}>{tpl.subject}</div>
+          </div>
+        )}
+        <div>
+          <div className="flabel" style={{ marginBottom:5 }}>Message Body</div>
+          <pre style={{ padding:14, background:"var(--bg)", borderRadius:9, border:"1px solid var(--border)", fontSize:".8rem", lineHeight:1.65, whiteSpace:"pre-wrap", fontFamily:"'Plus Jakarta Sans',sans-serif", color:"var(--t1)", minHeight:140 }}>{rendered}</pre>
+        </div>
+        <div style={{ display:"flex", gap:5, flexWrap:"wrap" }}>{tpl.variables.map(function(v){ return <VarPill key={v} v={v}/>; })}</div>
+        <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center" }}>
+          <span style={{ fontSize:".72rem", color:"var(--t3)" }}>Sent {fmt(tpl.sentCount)} times · {tpl.replyRate}% reply rate</span>
+          <button className="btn-primary" onClick={doCopy}>
+            <Ic k={copied?"checkCircle":"copy"} size={14}/>{copied?"Copied!":"Copy Body"}
+          </button>
+        </div>
+      </div>
+    </Modal>
+  );
+}
+
+function TplEditor(props) {
+  var tpl = props.tpl; var onClose = props.onClose; var onSave = props.onSave;
+  var isNew = !tpl;
+  var _n = useState(tpl?tpl.name:"");        var name=_n[0]; var setName=_n[1];
+  var _t = useState(tpl?tpl.tag:"outreach"); var tag=_t[0]; var setTag=_t[1];
+  var _s = useState(tpl?tpl.subject:"");     var subj=_s[0]; var setSubj=_s[1];
+  var _b = useState(tpl?tpl.body:"");        var body=_b[0]; var setBody=_b[1];
+
+  var allText = body+subj;
+  var matches = allText.match(/\{\{(\w+)\}\}/g)||[];
+  var detectedVars = matches.filter(function(v,i,arr){ return arr.indexOf(v)===i; }).map(function(v){ return v.replace(/[{}]/g,""); });
+
+  function insertVar(v) { setBody(function(b){ return b+"{{"+v+"}}"; }); }
+  function doSave() {
+    if (!name.trim()||!body.trim()) return;
+    onSave({ id:tpl?tpl.id:("t_"+Date.now()), name:name.trim(), tag:tag, subject:subj, body:body, variables:detectedVars, sentCount:tpl?tpl.sentCount:0, replyRate:tpl?tpl.replyRate:0, createdAt:tpl?tpl.createdAt:new Date().toISOString().slice(0,10) });
+    onClose();
+  }
+  return (
+    <Modal title={isNew?"New Template":"Edit Template"} onClose={onClose}>
+      <div style={{ display:"flex", flexDirection:"column", gap:14 }}>
+        <div style={{ display:"grid", gridTemplateColumns:"1fr auto", gap:10 }}>
+          <div className="field">
+            <label className="flabel">Template Name</label>
+            <input className="finput" value={name} onChange={function(e){setName(e.target.value);}} placeholder="e.g. WhatsApp Intro"/>
+          </div>
+          <div className="field">
+            <label className="flabel">Tag</label>
+            <select className="finput" value={tag} onChange={function(e){setTag(e.target.value);}} style={{ minWidth:110 }}>
+              {TAG_OPTS.map(function(t){ return <option key={t} value={t}>{t}</option>; })}
+            </select>
+          </div>
+        </div>
+        <div className="field">
+          <label className="flabel">Subject <span className="t3" style={{ textTransform:"none", fontWeight:400 }}>(optional)</span></label>
+          <input className="finput" value={subj} onChange={function(e){setSubj(e.target.value);}} placeholder="e.g. Quick question for {{business_name}}"/>
+        </div>
+        <div className="field">
+          <label className="flabel" style={{ display:"flex", justifyContent:"space-between" }}>
+            <span>Message Body</span>
+            <span className="t3 small" style={{ fontWeight:400, textTransform:"none" }}>{"Use {{variable}} for personalisation"}</span>
+          </label>
+          <textarea className="finput" value={body} onChange={function(e){setBody(e.target.value);}} rows={7} style={{ resize:"vertical", fontFamily:"inherit", lineHeight:1.6 }} placeholder={"Hi {{name}},\n\nI noticed {{business_name}} doesn't have a website…"}/>
+        </div>
+        <div className="field">
+          <label className="flabel">Quick-insert Variables</label>
+          <div style={{ display:"flex", gap:6, flexWrap:"wrap" }}>
+            {["name","business_name","category","sender_name","city"].map(function(v){
+              return <button key={v} onClick={function(){insertVar(v);}} className="chip" style={{ fontFamily:"monospace", fontSize:".72rem" }}>{"{{"+v+"}}"}</button>;
+            })}
+          </div>
+        </div>
+        {detectedVars.length>0 && (
+          <div style={{ display:"flex", gap:5, flexWrap:"wrap", padding:"8px 12px", background:"#fffbeb", borderRadius:8, border:"1px solid #fde68a" }}>
+            <span style={{ fontSize:".71rem", color:"#92400e", fontWeight:600, marginRight:4 }}>Detected:</span>
+            {detectedVars.map(function(v){ return <VarPill key={v} v={v}/>; })}
+          </div>
+        )}
+        <div style={{ display:"flex", gap:8, justifyContent:"flex-end" }}>
+          <button className="btn-ghost" onClick={onClose}>Cancel</button>
+          <button className="btn-primary" onClick={doSave} disabled={!name.trim()||!body.trim()}>
+            <Ic k="save" size={14}/>{isNew?"Create Template":"Save Changes"}
+          </button>
+        </div>
+      </div>
+    </Modal>
+  );
+}
+
+function TemplatesTab(props) {
+  var toast = props.toast;
+  var _tp = useState(INIT_TPLS);  var templates=_tp[0]; var setTemplates=_tp[1];
+  var _ed = useState(null);        var editing=_ed[0]; var setEditing=_ed[1];
+  var _nw = useState(false);       var showNew=_nw[0]; var setShowNew=_nw[1];
+  var _pv = useState(null);        var previewing=_pv[0]; var setPreviewing=_pv[1];
+  var _fi = useState("all");       var filter=_fi[0]; var setFilter=_fi[1];
+  var _sq = useState("");          var search=_sq[0]; var setSearch=_sq[1];
+
+  var usedTags = TAG_OPTS.filter(function(t){ return templates.some(function(tp){return tp.tag===t;}); });
+  var tags = ["all"].concat(usedTags);
+
+  var visible = templates.filter(function(t){
+    var matchTag = filter==="all"||t.tag===filter;
+    var q = search.toLowerCase();
+    var matchQ = !search || t.name.toLowerCase().indexOf(q)!==-1 || t.body.toLowerCase().indexOf(q)!==-1;
+    return matchTag&&matchQ;
+  });
+
+  function doDelete(id) { setTemplates(function(ts){return ts.filter(function(t){return t.id!==id;});}); toast("Template deleted."); }
+  function doSave(tpl) {
+    setTemplates(function(ts){
+      var exists = ts.some(function(t){return t.id===tpl.id;});
+      if (exists) return ts.map(function(t){return t.id===tpl.id?tpl:t;});
+      return ts.concat([tpl]);
+    });
+    toast(tpl.id.indexOf("t_")===0?"Template created!":"Template updated!");
+  }
+
+  var avgReply = templates.length ? Math.round(templates.reduce(function(a,t){return a+t.replyRate;},0)/templates.length) : 0;
+
+  return (
+    <div>
+      <div className="section-topbar">
+        <div>
+          <h2 className="sec-title">DM Templates</h2>
+          <p className="sec-sub">{templates.length} templates · avg {avgReply}% reply rate</p>
+        </div>
+        <div style={{ display:"flex", gap:10, alignItems:"center", flexWrap:"wrap" }}>
+          <div className="search-box"><Ic k="search" size={13}/><input value={search} onChange={function(e){setSearch(e.target.value);}} placeholder="Search templates…" className="search-input"/></div>
+          <button className="btn-primary" onClick={function(){setEditing(null);setShowNew(true);}}><Ic k="plus" size={14}/>New Template</button>
+        </div>
+      </div>
+
+      <div style={{ display:"flex", gap:6, flexWrap:"wrap", marginBottom:20 }}>
+        {tags.map(function(t){
+          var c = t==="all" ? "#5B67F8" : (TAG_CLR[t]||"#5B67F8");
+          var isActive = filter===t;
+          return (
+            <button key={t} onClick={function(){setFilter(t);}} style={{ padding:"5px 14px", borderRadius:99, fontSize:".75rem", fontWeight:700, fontFamily:"inherit", cursor:"pointer", transition:"all .15s", background:isActive?c:"var(--surface)", color:isActive?"#fff":"var(--t2)", border:isActive?"1.5px solid "+c:"1.5px solid var(--border)", boxShadow:isActive?"0 2px 8px "+c+"44":"none" }}>
+              {t==="all"?"All Templates":t}
+              {t!=="all" && <span style={{ marginLeft:5, opacity:.7, fontSize:".68rem" }}>({templates.filter(function(tp){return tp.tag===t;}).length})</span>}
+            </button>
+          );
+        })}
+      </div>
+
+      {visible.length===0
+        ? <div className="tbl-empty" style={{ background:"var(--surface)", borderRadius:"var(--r)", border:"1px solid var(--border)", padding:48 }}><Ic k="msg" size={28} style={{opacity:.2}}/>No templates match</div>
+        : <div className="tpl-grid">
+            {visible.map(function(tpl){
+              var tc = TAG_CLR[tpl.tag]||"#5B67F8";
+              return (
+                <div key={tpl.id} className="tpl-card">
+                  <div style={{ display:"flex", alignItems:"flex-start", gap:10, marginBottom:8 }}>
+                    <div style={{ flex:1, minWidth:0 }}>
+                      <div style={{ fontWeight:700, fontSize:".88rem", color:"var(--t1)", marginBottom:4, overflow:"hidden", textOverflow:"ellipsis", whiteSpace:"nowrap" }}>{tpl.name}</div>
+                      <span style={{ display:"inline-flex", padding:"2px 9px", borderRadius:6, background:tc+"22", color:tc, fontSize:".68rem", fontWeight:800, textTransform:"uppercase", letterSpacing:".05em" }}>{tpl.tag}</span>
+                    </div>
+                    <div style={{ display:"flex", gap:5, flexShrink:0 }}>
+                      <button className="icon-sq-sm" onClick={function(){setPreviewing(tpl);}} title="Preview"><Ic k="eyeOn" size={13}/></button>
+                      <button className="icon-sq-sm" onClick={function(){setEditing(tpl);setShowNew(false);}} title="Edit"><Ic k="edit" size={13}/></button>
+                      <button className="icon-sq-sm dang" onClick={function(){doDelete(tpl.id);}} title="Delete"><Ic k="trash" size={13}/></button>
+                    </div>
+                  </div>
+                  {tpl.subject && <div style={{ fontSize:".74rem", color:"var(--t2)", marginBottom:8, fontWeight:600, overflow:"hidden", textOverflow:"ellipsis", whiteSpace:"nowrap" }}>✉️ {tpl.subject}</div>}
+                  <div style={{ fontSize:".77rem", color:"var(--t2)", lineHeight:1.55, display:"-webkit-box", WebkitLineClamp:3, WebkitBoxOrient:"vertical", overflow:"hidden", background:"var(--bg)", padding:"10px 12px", borderRadius:8, border:"1px solid var(--bs)", fontStyle:"italic", marginBottom:8 }}>{tpl.body}</div>
+                  {tpl.variables.length>0 && (
+                    <div style={{ display:"flex", gap:4, flexWrap:"wrap", marginBottom:8 }}>
+                      {tpl.variables.map(function(v){ return <VarPill key={v} v={v}/>; })}
+                    </div>
+                  )}
+                  <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", paddingTop:8, borderTop:"1px solid var(--bs)" }}>
+                    <div style={{ display:"flex", gap:12 }}>
+                      <span style={{ display:"inline-flex", alignItems:"center", gap:4, fontSize:".71rem", color:"var(--t3)", fontWeight:600 }}><Ic k="send" size={11}/>{fmt(tpl.sentCount)} sent</span>
+                      <span style={{ display:"inline-flex", alignItems:"center", gap:4, fontSize:".71rem", fontWeight:600, color:tpl.replyRate>20?"#22c55e":"var(--t3)" }}><Ic k="trending" size={11}/>{tpl.replyRate}% replies</span>
+                    </div>
+                    <span className="t3 small mono">{tpl.createdAt}</span>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+      }
+
+      <div style={{ background:"var(--surface)", border:"1.5px solid var(--border)", borderRadius:"var(--r)", padding:"18px 20px", boxShadow:"var(--sh)", marginTop:8 }}>
+        <div style={{ display:"flex", alignItems:"center", gap:8, marginBottom:10 }}>
+          <Ic k="info" size={15} style={{color:"var(--indigo)"}}/>
+          <span style={{ fontWeight:700, fontSize:".82rem" }}>Available Variables</span>
+        </div>
+        <div style={{ display:"flex", flexWrap:"wrap", gap:10 }}>
+          {[["name","Contact name"],["business_name","Business name"],["category","Business type"],["sender_name","Your name"],["city","Lead city"],["phone","Phone number"]].map(function(pair){
+            return (
+              <div key={pair[0]} style={{ display:"flex", flexDirection:"column", gap:3 }}>
+                <VarPill v={pair[0]}/>
+                <span style={{ fontSize:".65rem", color:"var(--t3)", paddingLeft:2 }}>{pair[1]}</span>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      {(showNew||editing) && <TplEditor tpl={editing} onClose={function(){setShowNew(false);setEditing(null);}} onSave={doSave}/>}
+      {previewing && <TplPreview tpl={previewing} onClose={function(){setPreviewing(null);}}/>}
+    </div>
+  );
+}
+
+/* ══════════════════════════════
+   ROOT
+══════════════════════════════ */
+var TABS = [
+  { key:"dashboard",  label:"Dashboard",    icon:"bar"  },
+  { key:"categories", label:"Categories",   icon:"grid" },
+  { key:"templates",  label:"DM Templates", icon:"msg"  },
+];
+
+function App() {
+  var _tab = useState("dashboard");  var tab=_tab[0]; var setTab=_tab[1];
+  var _run = useState(false);        var running=_run[0]; var setRunning=_run[1];
+  var _bl  = useState(false);        var botLoading=_bl[0]; var setBotLoading=_bl[1];
+  var _ac  = useState("");           var activeCity=_ac[0]; var setActiveCity=_ac[1];
+  var _cfg = useState({ apiKey:"AIzaSy••••zXYZ", sheetId:"1BxiMVs8BtRS", dailyLimit:30 });
+  var config=_cfg[0]; var setConfig=_cfg[1];
+  var _tm  = useState(null);         var toastMsg=_tm[0]; var setToastMsg=_tm[1];
+
+  function toast(msg){ setToastMsg(null); setTimeout(function(){setToastMsg(msg);},10); }
+  function handleBotToggle() {
+    setBotLoading(true);
+    setTimeout(function(){
+      setRunning(function(r){return !r;});
+      setBotLoading(false);
+      toast(running?"Bot stopped.":"Bot started!");
+    }, 900);
+  }
+
+  return (
+    <div className="app">
+      <style>{CSS}</style>
+
+      <header className="app-hdr">
+        <div style={{ display:"flex", alignItems:"center", gap:12 }}>
+          <div className="brand-icon"><Ic k="activity" size={18} sw={2.5}/></div>
+          <div>
+            <div className="brand-name">LeadRadar</div>
+            <div className="brand-sub">Local Business Intelligence</div>
+          </div>
+        </div>
+        <nav className="tab-nav">
+          {TABS.map(function(t){
+            return (
+              <button key={t.key} onClick={function(){setTab(t.key);}} className={"tab-btn "+(tab===t.key?"tab-active":"")}>
+                <Ic k={t.icon} size={14}/><span>{t.label}</span>
+              </button>
+            );
+          })}
+        </nav>
+        <div style={{ display:"flex", alignItems:"center", gap:10 }}>
+          <span className="ref-hint"><Ic k="clock" size={11}/>{new Date().toLocaleTimeString("en-IN",{hour:"2-digit",minute:"2-digit"})}</span>
+          <BotControl running={running} onToggle={handleBotToggle} loading={botLoading}/>
+        </div>
+      </header>
+
+      <main style={{ paddingTop:4 }}>
+        {tab==="dashboard"  && <DashboardTab running={running} onToggle={handleBotToggle} activeCity={activeCity} onCitySwitch={setActiveCity} config={config} onConfigSave={function(c){setConfig(function(p){return Object.assign({},p,c);});}}/>}
+        {tab==="categories" && <CategoriesTab toast={toast}/>}
+        {tab==="templates"  && <TemplatesTab  toast={toast}/>}
+      </main>
+
+      <footer style={{ marginTop:40, paddingTop:18, borderTop:"1px solid var(--border)", fontSize:".7rem", color:"var(--t3)", textAlign:"center", fontWeight:500 }}>
+        LeadRadar v2 &nbsp;·&nbsp; FastAPI + Google Places API (New) &nbsp;·&nbsp; {running?"🟢 Bot running":"⚪ Bot idle"}
+      </footer>
+
+      {toastMsg && <Toast msg={toastMsg} onDone={function(){setToastMsg(null);}}/>}
+    </div>
+  );
+}
+
+const CSS = `
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#F5F7FA;--surface:#fff;--border:#E4E9F0;--bs:#EEF2F7;
+  --t1:#0D1B2A;--t2:#4A5568;--t3:#9AA5B4;
+  --indigo:#5B67F8;--indigo-lt:#EEF0FE;
+  --amber:#F59E0B;--r:14px;
+  --sh:0 1px 3px rgba(13,27,42,.05),0 1px 2px rgba(13,27,42,.04);
+  --sh-md:0 4px 20px rgba(13,27,42,.08),0 1px 4px rgba(13,27,42,.04);
+  font-family:'Plus Jakarta Sans',system-ui,sans-serif;color:var(--t1);
+}
+body{background:var(--bg);min-height:100vh}
+.mono{font-family:'JetBrains Mono',monospace}.small{font-size:.78rem}.t3{color:var(--t3)}
+.app{max-width:1440px;margin:0 auto;padding:0 28px 52px}
+.app-hdr{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;padding:18px 0 0;border-bottom:1px solid var(--border);margin-bottom:28px}
+.brand-icon{width:40px;height:40px;border-radius:12px;background:linear-gradient(135deg,#5B67F8,#818cf8);display:grid;place-items:center;color:#fff;box-shadow:0 3px 10px rgba(91,103,248,.35);flex-shrink:0}
+.brand-name{font-size:1.1rem;font-weight:800;letter-spacing:-.025em}.brand-sub{font-size:.68rem;color:var(--t3);font-weight:500}
+.ref-hint{display:flex;align-items:center;gap:4px;color:var(--t3);font-size:.72rem}
+.tab-nav{display:flex;gap:2px;background:var(--bs);padding:4px;border-radius:11px;flex-shrink:0}
+.tab-btn{display:flex;align-items:center;gap:6px;padding:6px 16px;border-radius:8px;font-size:.79rem;font-weight:600;font-family:inherit;cursor:pointer;border:none;background:transparent;color:var(--t3);transition:all .18s}
+.tab-btn:hover{color:var(--t1)}.tab-active{background:var(--surface)!important;color:var(--t1)!important;box-shadow:var(--sh)}
+.bot-btn{display:flex;align-items:center;gap:8px;padding:8px 18px;border-radius:10px;font-size:.82rem;font-weight:700;font-family:inherit;cursor:pointer;border:none;transition:all .2s;letter-spacing:.01em}
+.bot-start{background:linear-gradient(135deg,#22c55e,#16a34a);color:#fff;box-shadow:0 2px 10px rgba(34,197,94,.28)}
+.bot-start:hover{transform:translateY(-1px);box-shadow:0 4px 16px rgba(34,197,94,.38)}
+.bot-stop{background:linear-gradient(135deg,#ef4444,#dc2626);color:#fff;box-shadow:0 2px 10px rgba(239,68,68,.28)}
+.bot-btn:disabled{opacity:.6;cursor:not-allowed;transform:none!important}
+.panel{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);box-shadow:var(--sh);overflow:hidden}
+.panel-hdr{display:flex;align-items:center;gap:8px;padding:15px 20px;border-bottom:1px solid var(--bs);font-weight:700;color:var(--t2);font-size:.82rem}
+.panel-hdr h2{font-size:.85rem;font-weight:700;color:var(--t1)}
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:22px}
+@media(max-width:900px){.stats-row{grid-template-columns:repeat(2,1fr)}}@media(max-width:480px){.stats-row{grid-template-columns:1fr}}
+.stat-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:18px 20px;display:flex;gap:13px;align-items:flex-start;box-shadow:var(--sh);position:relative;overflow:hidden;transition:box-shadow .2s,transform .2s}
+.stat-card:hover{box-shadow:var(--sh-md);transform:translateY(-1px)}
+.stat-card::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:var(--accent);border-radius:var(--r) var(--r) 0 0}
+.stat-card__icon{width:36px;height:36px;border-radius:9px;flex-shrink:0;background:color-mix(in srgb,var(--accent) 13%,white);color:var(--accent);display:grid;place-items:center}
+.stat-label{font-size:.69rem;color:var(--t3);font-weight:700;text-transform:uppercase;letter-spacing:.06em}
+.stat-value{font-size:1.3rem;font-weight:800;margin-top:3px;font-family:'JetBrains Mono',monospace;letter-spacing:-.02em;color:var(--t1)}
+.stat-sub{font-size:.71rem;color:var(--t3);margin-top:3px}
+.main-grid{display:grid;grid-template-columns:300px 1fr;gap:18px;align-items:start}
+@media(max-width:1024px){.main-grid{grid-template-columns:1fr}}
+.col{display:flex;flex-direction:column;gap:16px}
+.prog-track{height:7px;background:var(--bs);border-radius:99px;overflow:hidden}
+.prog-fill{height:100%;border-radius:99px;background:linear-gradient(90deg,#5B67F8,#818cf8);transition:width .6s cubic-bezier(.4,0,.2,1);box-shadow:0 0 8px rgba(91,103,248,.35)}
+.api-stat{display:flex;align-items:center;gap:7px;padding:10px 20px 14px;font-size:.78rem;color:var(--t2);font-weight:600;border-top:1px solid var(--bs)}
+.field{display:flex;flex-direction:column;gap:5px}
+.flabel{font-size:.7rem;font-weight:700;color:var(--t2);text-transform:uppercase;letter-spacing:.05em}
+.finput{padding:8px 12px;border-radius:9px;border:1.5px solid var(--border);font-size:.82rem;background:var(--bg);color:var(--t1);font-family:inherit;outline:none;transition:border-color .15s,box-shadow .15s}
+.finput:focus{border-color:var(--indigo);box-shadow:0 0 0 3px rgba(91,103,248,.13)}
+select.finput{cursor:pointer}
+.fslider{width:100%;accent-color:var(--indigo);cursor:pointer;margin-top:2px}
+.badge-i{font-family:'JetBrains Mono',monospace;background:var(--indigo-lt);color:var(--indigo);padding:1px 8px;border-radius:6px;font-size:.78rem;font-weight:700}
+.btn-primary{display:inline-flex;align-items:center;justify-content:center;gap:7px;padding:8px 16px;border-radius:9px;background:var(--indigo);color:#fff;font-size:.8rem;font-weight:700;font-family:inherit;border:none;cursor:pointer;transition:all .2s;box-shadow:0 2px 8px rgba(91,103,248,.28);white-space:nowrap}
+.btn-primary:hover:not(:disabled){background:#4a56e0;transform:translateY(-1px)}.btn-primary:disabled{opacity:.55;cursor:not-allowed;transform:none}
+.btn-ghost{display:inline-flex;align-items:center;gap:6px;padding:7px 14px;border-radius:9px;background:transparent;color:var(--t2);font-size:.8rem;font-weight:600;font-family:inherit;border:1.5px solid var(--border);cursor:pointer;transition:all .15s}
+.btn-ghost:hover{background:var(--bg);border-color:#cbd5e1}
+.icon-sq{width:34px;height:34px;border-radius:9px;border:1.5px solid var(--border);background:var(--bg);color:var(--t3);cursor:pointer;display:grid;place-items:center;transition:all .15s;flex-shrink:0}
+.icon-sq:hover{border-color:#cbd5e1;color:var(--t2)}
+.icon-sq-sm{width:28px;height:28px;border-radius:7px;border:1px solid var(--border);background:var(--bg);color:var(--t3);cursor:pointer;display:grid;place-items:center;transition:all .15s;flex-shrink:0}
+.icon-sq-sm:hover{border-color:#cbd5e1;color:var(--t2)}.icon-sq-sm.dang:hover{border-color:#fca5a5;color:#ef4444;background:#fff5f5}
+.chip{display:inline-flex;align-items:center;gap:5px;padding:4px 12px;border-radius:99px;border:1.5px solid var(--border);background:var(--bg);color:var(--t2);font-size:.74rem;font-weight:600;font-family:inherit;cursor:pointer;transition:all .15s}
+.chip:hover{border-color:var(--indigo);color:var(--indigo);background:var(--indigo-lt)}
+.chip-active{background:var(--indigo)!important;color:#fff!important;border-color:var(--indigo)!important;box-shadow:0 2px 8px rgba(91,103,248,.28)}
+.search-box{display:flex;align-items:center;gap:7px;padding:6px 11px;border-radius:9px;border:1.5px solid var(--border);background:var(--surface);color:var(--t3)}
+.search-input{border:none;background:transparent;outline:none;font-size:.78rem;color:var(--t1);font-family:inherit;width:130px}
+.tbl{width:100%;border-collapse:collapse;font-size:.8rem}
+.tbl thead tr{border-bottom:1px solid var(--border)}
+.tbl th{padding:9px 16px;text-align:left;font-size:.67rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--t3);white-space:nowrap;background:var(--bg)}
+.tbl th span{display:flex;align-items:center;gap:5px}
+.tbl td{padding:11px 16px;border-bottom:1px solid var(--bs)}
+.tbl tbody tr:last-child td{border-bottom:none}.tbl tbody tr:hover{background:#fafbfd}
+.trow{animation:rowIn .22s ease both}@keyframes rowIn{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
+.name-cell{font-weight:600;max-width:200px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--t1)}
+.cat-tag{display:inline-flex;padding:2px 9px;border-radius:6px;background:#EFF9FF;color:#0369a1;font-size:.7rem;font-weight:700}
+.status-pill{display:inline-flex;align-items:center;gap:4px;padding:2px 9px;border-radius:99px;background:#EDFBF3;color:#15803d;font-size:.7rem;font-weight:700}
+.tbl-empty{display:flex;flex-direction:column;align-items:center;gap:10px;padding:48px 20px;color:var(--t3);font-size:.82rem}
+.pagination{display:flex;align-items:center;justify-content:space-between;padding:12px 20px;border-top:1px solid var(--bs);font-size:.76rem}
+.pag-btn{min-width:30px;height:30px;border-radius:7px;border:1.5px solid var(--border);background:var(--surface);color:var(--t2);cursor:pointer;font-size:.76rem;display:grid;place-items:center;font-family:inherit;font-weight:600;transition:all .15s}
+.pag-btn:hover:not(:disabled){border-color:var(--indigo);color:var(--indigo)}.pag-active{background:var(--indigo);color:#fff!important;border-color:var(--indigo)!important}
+.pag-btn:disabled{opacity:.35;cursor:not-allowed}
+.section-topbar{display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:18px}
+.sec-title{font-size:1.1rem;font-weight:800;color:var(--t1);letter-spacing:-.02em}.sec-sub{font-size:.76rem;color:var(--t3);margin-top:3px;font-weight:500}
+.cat-stats-bar{display:flex;align-items:center;background:var(--surface);border:1px solid var(--border);border-radius:var(--r);box-shadow:var(--sh);padding:14px 24px;margin-bottom:20px;flex-wrap:wrap;gap:4px}
+.cs-item{display:flex;flex-direction:column;align-items:center;gap:2px;flex:1;min-width:80px}
+.cs-num{font-size:1.4rem;font-weight:800;font-family:'JetBrains Mono',monospace;color:var(--t1)}
+.cs-div{width:1px;height:32px;background:var(--border);flex-shrink:0;margin:0 8px}
+.cat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:14px}
+.cat-card{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--r);padding:16px;box-shadow:var(--sh);transition:box-shadow .2s,transform .2s,opacity .2s}
+.cat-card:hover{box-shadow:var(--sh-md);transform:translateY(-1px)}.cat-off{opacity:.55}
+.tog-btn{width:36px;height:20px;border-radius:99px;border:none;cursor:pointer;position:relative;transition:background .2s;flex-shrink:0;padding:0;margin-left:auto}
+.tog-on{background:#22c55e}.tog-off{background:#cbd5e1}
+.tog-knob{position:absolute;top:2px;width:16px;height:16px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.2);transition:left .2s}
+.tog-on .tog-knob{left:18px}.tog-off .tog-knob{left:2px}
+.cat-add-tile{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;background:transparent;border:2px dashed var(--border);border-radius:var(--r);padding:24px;cursor:pointer;color:var(--t3);font-size:.82rem;font-weight:600;font-family:inherit;transition:all .2s;min-height:130px}
+.cat-add-tile:hover{border-color:var(--indigo);color:var(--indigo);background:var(--indigo-lt)}
+.tpl-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:16px;margin-bottom:24px}
+.tpl-card{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--r);padding:18px 20px;box-shadow:var(--sh);transition:box-shadow .2s,transform .2s}
+.tpl-card:hover{box-shadow:var(--sh-md);transform:translateY(-1px)}
+.modal-backdrop{position:fixed;inset:0;background:rgba(13,27,42,.45);display:grid;place-items:center;z-index:1000;padding:20px;backdrop-filter:blur(3px);animation:fadeIn .15s ease}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.modal{background:var(--surface);border-radius:16px;box-shadow:0 20px 60px rgba(13,27,42,.18);width:100%;max-width:540px;animation:slideUp .2s ease;max-height:90vh;overflow-y:auto}
+@keyframes slideUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.modal-header{display:flex;align-items:center;justify-content:space-between;padding:18px 22px 14px;border-bottom:1px solid var(--border)}
+.modal-header h3{font-size:.95rem;font-weight:800;color:var(--t1)}
+.modal-close{width:30px;height:30px;border-radius:7px;border:1px solid var(--border);background:var(--bg);cursor:pointer;display:grid;place-items:center;color:var(--t3);transition:all .15s}
+.modal-close:hover{background:var(--border);color:var(--t1)}.modal-body{padding:20px 22px}
+.toast{position:fixed;bottom:24px;right:24px;background:var(--t1);color:#fff;padding:10px 18px;border-radius:11px;font-size:.8rem;font-weight:600;display:flex;align-items:center;gap:8px;box-shadow:0 8px 24px rgba(13,27,42,.22);animation:toastIn .22s ease;z-index:2000}
+@keyframes toastIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+@keyframes ping{75%,100%{transform:scale(2.2);opacity:0}}
+.spin{animation:spinK .7s linear infinite}@keyframes spinK{to{transform:rotate(360deg)}}
+@media(max-width:680px){.app{padding:0 14px 40px}.tab-btn span{display:none}.stat-value{font-size:1.1rem}.tpl-grid{grid-template-columns:1fr}.cat-grid{grid-template-columns:1fr 1fr}}
+`;
+
+ReactDOM.createRoot(document.getElementById("root")).render(<App/>);
+</script>
+</body>
+</html>
