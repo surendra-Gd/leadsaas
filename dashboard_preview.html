@@ -4,6 +4,8 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
 <title>LeadRadar — Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap"/>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.development.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.development.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.2/babel.min.js"></script>
@@ -11,9 +13,40 @@
 <body>
 <div id="root"></div>
 <script type="text/babel">
-const { useState, useRef, useEffect } = React;
+const { useState, useRef, useEffect, useCallback } = React;
 
-/* ── Icons ── */
+/* ═══════════════════════════════════════════════════════════
+   API LAYER  — all server calls go through here
+   Change API_BASE to point at your FastAPI server.
+═══════════════════════════════════════════════════════════ */
+const API_BASE = "http://localhost:8000";
+
+async function api(method, path, body) {
+  const opts = {
+    method,
+    headers: { "Content-Type": "application/json" },
+  };
+  if (body !== undefined) opts.body = JSON.stringify(body);
+  try {
+    const res = await fetch(API_BASE + path, opts);
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({ detail: res.statusText }));
+      throw new Error(err.detail || `HTTP ${res.status}`);
+    }
+    return await res.json();
+  } catch (e) {
+    if (e instanceof TypeError) throw new Error("Cannot reach API — is the server running?");
+    throw e;
+  }
+}
+
+const GET    = (path)        => api("GET",    path);
+const POST   = (path, body)  => api("POST",   path, body);
+const DELETE = (path)        => api("DELETE", path);
+
+/* ═══════════════════════════════════════════════════════════
+   ICONS
+═══════════════════════════════════════════════════════════ */
 const P = {
   activity:   "M22 12h-4l-3 9L9 3l-3 9H2",
   zap:        "M13 2L3 14h9l-1 8 10-12h-9l1-8z",
@@ -47,6 +80,9 @@ const P = {
   send:       ["M22 2L11 13","M22 2L15 22l-4-9-9-4 20-7z"],
   xIcon:      ["M18 6L6 18","M6 6l12 12"],
   info:       ["M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20z","M12 8h.01","M12 12v4"],
+  wifi:       ["M1.42 9a16 16 0 0 1 21.16 0","M5 12.55a11 11 0 0 1 14.08 0","M8.53 16.11a6 6 0 0 1 6.95 0","M12 20h.01"],
+  wifiOff:    ["M1 1l22 22","M16.72 11.06A10.94 10.94 0 0 1 19 12.55","M5 12.55a11 11 0 0 1 5.17-2.39","M10.71 5.05A16 16 0 0 1 22.56 9","M1.42 9a15.91 15.91 0 0 1 4.7-2.88","M8.53 16.11a6 6 0 0 1 6.95 0","M12 20h.01"],
+  sync:       ["M4 4v5h.582m15.356 2A8.001 8.001 0 0 0 4.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 0 1-15.357-2m15.357 2H15"],
 };
 
 function Ic({ k, size=16, sw=2, className="", style={}, fill="none" }) {
@@ -61,150 +97,139 @@ function Ic({ k, size=16, sw=2, className="", style={}, fill="none" }) {
   );
 }
 
-/* ── Data ── */
-const INIT_CATS = [
-  { id:"c1", name:"Salons",        emoji:"✂️", color:"#8b5cf6", count:47, active:true  },
-  { id:"c2", name:"Bakeries",      emoji:"🥐", color:"#f59e0b", count:33, active:true  },
-  { id:"c3", name:"Clinics",       emoji:"🏥", color:"#10b981", count:28, active:true  },
-  { id:"c4", name:"Restaurants",   emoji:"🍽️", color:"#ef4444", count:61, active:true  },
-  { id:"c5", name:"Tailors",       emoji:"🧵", color:"#3b82f6", count:19, active:true  },
-  { id:"c6", name:"Photographers", emoji:"📷", color:"#ec4899", count:15, active:false },
-  { id:"c7", name:"Plumbers",      emoji:"🔧", color:"#0ea5e9", count:22, active:true  },
-  { id:"c8", name:"Electricians",  emoji:"⚡", color:"#f97316", count:18, active:true  },
-  { id:"c9", name:"Tutors",        emoji:"📚", color:"#06b6d4", count:24, active:false },
-  { id:"c10",name:"Gyms",          emoji:"🏋️", color:"#84cc16", count:11, active:true  },
-];
+/* ═══════════════════════════════════════════════════════════
+   CONSTANTS
+═══════════════════════════════════════════════════════════ */
+const CITIES    = ["Hyderabad, India","Chennai, India","Pune, India","Jaipur, India","Lucknow, India","Bengaluru, India","Mumbai, India","Delhi, India"];
+const EMOJIS    = ["✂️","🥐","🏥","🍽️","🧵","📷","🔧","⚡","📚","🏋️","💇","🎨","🚗","🌿","💊","🐾","🍕","☕","🎵","🏠"];
+const COLORS    = ["#8b5cf6","#f59e0b","#10b981","#ef4444","#3b82f6","#ec4899","#0ea5e9","#f97316","#06b6d4","#84cc16","#6366f1","#14b8a6"];
+const TAG_OPTS  = ["outreach","followup","value","whatsapp","email","sms","linkedin"];
+const TAG_CLR   = { outreach:"#6366f1", followup:"#f59e0b", value:"#10b981", whatsapp:"#25d366", email:"#3b82f6", sms:"#ec4899", linkedin:"#0077b5" };
+const PAGE_SIZE = 10;
+const fmt       = n => (n||0).toLocaleString();
 
-const INIT_TPLS = [
-  { id:"t1", name:"Classic Cold Outreach", tag:"outreach", subject:"Grow your business online — quick intro",
-    body:"Hi {{name}},\n\nI came across {{business_name}} and noticed you don't have a website yet. In today's market, a simple website can bring in {{category}} customers who are searching online every day.\n\nI help local businesses like yours get online quickly and affordably. Would you be open to a quick 10-minute call this week?\n\nBest,\n{{sender_name}}",
-    variables:["name","business_name","category","sender_name"], sentCount:142, replyRate:18, createdAt:"2025-01-15" },
-  { id:"t2", name:"Soft Follow-Up", tag:"followup", subject:"Just checking in — {{business_name}}",
-    body:"Hey {{name}},\n\nJust following up on my previous message. I wanted to make sure it didn't get lost!\n\nI genuinely think a website could make a big difference for {{business_name}}. Many {{category}} owners I've worked with saw new customer enquiries within the first month.\n\nNo pressure at all — just let me know if you'd like to chat.\n\nCheers,\n{{sender_name}}",
-    variables:["name","business_name","category","sender_name"], sentCount:89, replyRate:24, createdAt:"2025-01-28" },
-  { id:"t3", name:"Value-First Approach", tag:"value", subject:"Free website audit for {{business_name}}",
-    body:"Hello {{name}},\n\nI'd love to offer {{business_name}} a completely free online presence report — no strings attached.\n\nThe report covers:\n• What customers see when they search for {{category}} in your area\n• 3 quick wins to get more local visibility\n• Whether a website would be worth it for your business\n\nTakes me 10 minutes to prepare and costs you nothing. Interested?\n\n{{sender_name}}",
-    variables:["name","business_name","category","sender_name"], sentCount:56, replyRate:31, createdAt:"2025-02-03" },
-  { id:"t4", name:"WhatsApp Short DM", tag:"whatsapp", subject:"",
-    body:"Hi {{name}} 👋 I noticed {{business_name}} doesn't have a website. I help {{category}} owners get found on Google — takes just 3 days to set up. Interested in knowing more?",
-    variables:["name","business_name","category"], sentCount:203, replyRate:22, createdAt:"2025-02-10" },
-];
-
-const MOCK_LEADS = [
-  { place_id:"p1",  name:"Ravi Kumar Tailors",     category:"Tailors",       phone:"+91 98765 43210", location:"Hyderabad, India", discovered_at:"2025-02-23T03:12:00Z" },
-  { place_id:"p2",  name:"Nandini Bakery",          category:"Bakeries",      phone:"+91 87654 32109", location:"Chennai, India",   discovered_at:"2025-02-23T02:55:00Z" },
-  { place_id:"p3",  name:"City Dental Clinic",      category:"Clinics",       phone:"",               location:"Pune, India",       discovered_at:"2025-02-22T11:10:00Z" },
-  { place_id:"p4",  name:"Green Leaf Salon",        category:"Salons",        phone:"+91 76543 21098", location:"Hyderabad, India", discovered_at:"2025-02-22T09:44:00Z" },
-  { place_id:"p5",  name:"Bharath Electricals",     category:"Electricians",  phone:"+91 65432 10987", location:"Jaipur, India",    discovered_at:"2025-02-21T16:30:00Z" },
-  { place_id:"p6",  name:"Elite Photographers",     category:"Photographers", phone:"+91 99887 76655", location:"Lucknow, India",   discovered_at:"2025-02-21T14:22:00Z" },
-  { place_id:"p7",  name:"Sunrise Gym",             category:"Gyms",          phone:"+91 90909 09090", location:"Chennai, India",   discovered_at:"2025-02-21T10:00:00Z" },
-  { place_id:"p8",  name:"Meera Home Tutors",       category:"Tutors",        phone:"+91 80808 08080", location:"Pune, India",      discovered_at:"2025-02-20T18:45:00Z" },
-  { place_id:"p9",  name:"Annapurna Sweet House",   category:"Bakeries",      phone:"+91 70707 07070", location:"Jaipur, India",    discovered_at:"2025-02-20T15:30:00Z" },
-  { place_id:"p10", name:"Quick Fix Plumbers",      category:"Plumbers",      phone:"+91 60606 06060", location:"Hyderabad, India", discovered_at:"2025-02-20T12:15:00Z" },
-  { place_id:"p11", name:"Laxmi Beauty Parlour",    category:"Salons",        phone:"+91 55554 44433", location:"Lucknow, India",   discovered_at:"2025-02-19T09:00:00Z" },
-  { place_id:"p12", name:"Balaji Eye Clinic",       category:"Clinics",       phone:"+91 44443 33322", location:"Chennai, India",   discovered_at:"2025-02-19T07:30:00Z" },
-  { place_id:"p13", name:"Sharma Photography",      category:"Photographers", phone:"",               location:"Pune, India",       discovered_at:"2025-02-18T16:00:00Z" },
-  { place_id:"p14", name:"Power Fit Gym",           category:"Gyms",          phone:"+91 33332 22211", location:"Jaipur, India",    discovered_at:"2025-02-18T14:00:00Z" },
-  { place_id:"p15", name:"Krishna Bakery",          category:"Bakeries",      phone:"+91 22221 11100", location:"Hyderabad, India", discovered_at:"2025-02-18T11:45:00Z" },
-  { place_id:"p16", name:"Suresh AC Repairs",       category:"Electricians",  phone:"+91 11110 00099", location:"Lucknow, India",   discovered_at:"2025-02-17T09:20:00Z" },
-  { place_id:"p17", name:"The Hair Studio",         category:"Salons",        phone:"+91 98123 45678", location:"Chennai, India",   discovered_at:"2025-02-17T08:00:00Z" },
-  { place_id:"p18", name:"Bright Kids Tuition",     category:"Tutors",        phone:"+91 97123 45678", location:"Pune, India",      discovered_at:"2025-02-16T17:00:00Z" },
-  { place_id:"p19", name:"Metro Plumbing Co.",      category:"Plumbers",      phone:"+91 96123 45678", location:"Jaipur, India",    discovered_at:"2025-02-16T14:30:00Z" },
-  { place_id:"p20", name:"Heritage Photo Studio",   category:"Photographers", phone:"+91 95123 45678", location:"Hyderabad, India", discovered_at:"2025-02-15T12:00:00Z" },
-  { place_id:"p21", name:"Fit Zone Gym",            category:"Gyms",          phone:"+91 94123 45678", location:"Lucknow, India",   discovered_at:"2025-02-15T10:00:00Z" },
-  { place_id:"p22", name:"Daily Fresh Bakery",      category:"Bakeries",      phone:"",               location:"Chennai, India",    discovered_at:"2025-02-14T08:30:00Z" },
-  { place_id:"p23", name:"MedPlus Clinic",          category:"Clinics",       phone:"+91 93123 45678", location:"Pune, India",      discovered_at:"2025-02-14T07:00:00Z" },
-  { place_id:"p24", name:"Royal Cuts Salon",        category:"Salons",        phone:"+91 92123 45678", location:"Jaipur, India",    discovered_at:"2025-02-13T16:45:00Z" },
-];
-
-const CITIES       = ["Hyderabad, India","Chennai, India","Pune, India","Jaipur, India","Lucknow, India","Bengaluru, India","Mumbai, India","Delhi, India"];
-const EMOJIS       = ["✂️","🥐","🏥","🍽️","🧵","📷","🔧","⚡","📚","🏋️","💇","🎨","🚗","🌿","💊","🐾","🍕","☕","🎵","🏠"];
-const COLORS       = ["#8b5cf6","#f59e0b","#10b981","#ef4444","#3b82f6","#ec4899","#0ea5e9","#f97316","#06b6d4","#84cc16","#6366f1","#14b8a6"];
-const TAG_OPTS     = ["outreach","followup","value","whatsapp","email","sms","linkedin"];
-const TAG_CLR      = { outreach:"#6366f1", followup:"#f59e0b", value:"#10b981", whatsapp:"#25d366", email:"#3b82f6", sms:"#ec4899", linkedin:"#0077b5" };
-const PAGE_SIZE    = 10;
-const fmt          = function(n){ return (n||0).toLocaleString(); };
-
-/* ── Shared ── */
-function StatusDot(props) {
-  var running = props.running;
+/* ═══════════════════════════════════════════════════════════
+   SHARED UI COMPONENTS
+═══════════════════════════════════════════════════════════ */
+function StatusDot({ running }) {
   return (
-    React.createElement("span", { style:{ position:"relative", display:"inline-flex", alignItems:"center" } },
-      running && React.createElement("span", { style:{ position:"absolute", inset:0, borderRadius:"50%", background:"#22c55e", animation:"ping 1.4s ease infinite" } }),
-      React.createElement("span", { style:{ width:10, height:10, borderRadius:"50%", background: running ? "#22c55e" : "#94a3b8", display:"inline-block", position:"relative", boxShadow: running ? "0 0 0 2px #dcfce7" : "none", transition:"all .3s" } })
-    )
+    <span style={{ position:"relative", display:"inline-flex", alignItems:"center" }}>
+      {running && <span style={{ position:"absolute", inset:0, borderRadius:"50%", background:"#22c55e", animation:"ping 1.4s ease infinite" }}/>}
+      <span style={{ width:10, height:10, borderRadius:"50%", background:running?"#22c55e":"#94a3b8", display:"inline-block", position:"relative", boxShadow:running?"0 0 0 2px #dcfce7":"none", transition:"all .3s" }}/>
+    </span>
   );
 }
 
-function Toast(props) {
-  useEffect(function(){ var t = setTimeout(props.onDone, 2200); return function(){ clearTimeout(t); }; }, []);
-  return <div className="toast"><Ic k="checkCircle" size={14}/>{props.msg}</div>;
+function Toast({ msg, onDone }) {
+  useEffect(() => { const t = setTimeout(onDone, 2400); return () => clearTimeout(t); }, []);
+  const isErr = msg && msg.toLowerCase().startsWith("error");
+  return (
+    <div className="toast" style={{ background: isErr ? "#dc2626" : "var(--t1)" }}>
+      <Ic k={isErr ? "alert" : "checkCircle"} size={14}/>
+      {msg}
+    </div>
+  );
 }
 
-function Modal(props) {
-  function handleBackdrop(e) { if (e.target === e.currentTarget) props.onClose(); }
+function Modal({ title, onClose, children }) {
+  function handleBackdrop(e) { if (e.target === e.currentTarget) onClose(); }
   return (
     <div className="modal-backdrop" onClick={handleBackdrop}>
       <div className="modal">
         <div className="modal-header">
-          <h3>{props.title}</h3>
-          <button className="modal-close" onClick={props.onClose}><Ic k="xIcon" size={16}/></button>
+          <h3>{title}</h3>
+          <button className="modal-close" onClick={onClose}><Ic k="xIcon" size={16}/></button>
         </div>
-        <div className="modal-body">{props.children}</div>
+        <div className="modal-body">{children}</div>
       </div>
     </div>
   );
 }
 
-function VarPill(props) {
-  return <span style={{ display:"inline-flex", alignItems:"center", gap:3, padding:"1px 8px", borderRadius:5, background:"#fef3c7", color:"#92400e", fontSize:".7rem", fontWeight:700, fontFamily:"monospace" }}>{"{{"}{props.v}{"}}"}</span>;
+function VarPill({ v }) {
+  return <span style={{ display:"inline-flex", alignItems:"center", gap:3, padding:"1px 8px", borderRadius:5, background:"#fef3c7", color:"#92400e", fontSize:".7rem", fontWeight:700, fontFamily:"monospace" }}>{"{{"}{v}{"}}"}</span>;
 }
 
-/* ══════════════════════════════
-   TAB 1 — DASHBOARD
-══════════════════════════════ */
-function StatCard(props) {
+function Spinner({ size=16 }) {
+  return <Ic k="refresh" size={size} className="spin"/>;
+}
+
+function ApiError({ msg, onRetry }) {
   return (
-    <div className="stat-card" style={{ "--accent": props.accent }}>
-      <div className="stat-card__icon"><Ic k={props.iconKey} size={18} sw={2}/></div>
-      <div>
-        <p className="stat-label">{props.label}</p>
-        <p className="stat-value">{props.value}</p>
-        {props.sub && <p className="stat-sub">{props.sub}</p>}
-      </div>
+    <div style={{ display:"flex", flexDirection:"column", alignItems:"center", gap:12, padding:"40px 20px", color:"var(--t3)" }}>
+      <Ic k="wifiOff" size={28} style={{ opacity:.4 }}/>
+      <p style={{ fontSize:".82rem", textAlign:"center", maxWidth:320 }}>{msg}</p>
+      {onRetry && <button className="btn-ghost" onClick={onRetry}><Ic k="refresh" size={14}/>Retry</button>}
     </div>
   );
 }
 
-function BotControl(props) {
-  var cls = "bot-btn " + (props.running ? "bot-stop" : "bot-start");
+function BotControl({ running, onToggle, loading }) {
+  const cls = "bot-btn " + (running ? "bot-stop" : "bot-start");
   return (
-    <button onClick={props.onToggle} disabled={props.loading} className={cls}>
-      {props.loading ? <Ic k="refresh" size={16} className="spin"/> : props.running ? <Ic k="stopSq" size={15} fill="currentColor"/> : <Ic k="play" size={15} fill="currentColor"/>}
-      <StatusDot running={props.running}/>
-      <span>{props.loading ? "Processing…" : props.running ? "Stop Bot" : "Start Bot"}</span>
+    <button onClick={onToggle} disabled={loading} className={cls}>
+      {loading ? <Spinner size={16}/> : running ? <Ic k="stopSq" size={15} fill="currentColor"/> : <Ic k="play" size={15} fill="currentColor"/>}
+      <StatusDot running={running}/>
+      <span>{loading ? "Processing…" : running ? "Stop Bot" : "Start Bot"}</span>
     </button>
   );
 }
 
-function ConfigPanel(props) {
-  var cfg = props.config;
-  var onSave = props.onSave;
-  var _s1 = useState(cfg.apiKey);    var apiKey = _s1[0]; var setApiKey = _s1[1];
-  var _s2 = useState(cfg.sheetId);   var sheetId = _s2[0]; var setSheetId = _s2[1];
-  var _s3 = useState(cfg.dailyLimit);var limit = _s3[0]; var setLimit = _s3[1];
-  var _s4 = useState(false);         var showKey = _s4[0]; var setShowKey = _s4[1];
-  var _s5 = useState(false);         var saving = _s5[0]; var setSaving = _s5[1];
-  var _s6 = useState(false);         var saved = _s6[0]; var setSaved = _s6[1];
+/* ═══════════════════════════════════════════════════════════
+   TAB 1 — DASHBOARD
+═══════════════════════════════════════════════════════════ */
+function StatCard({ iconKey, label, value, sub, accent }) {
+  return (
+    <div className="stat-card" style={{ "--accent": accent }}>
+      <div className="stat-card__icon"><Ic k={iconKey} size={18} sw={2}/></div>
+      <div>
+        <p className="stat-label">{label}</p>
+        <p className="stat-value">{value}</p>
+        {sub && <p className="stat-sub">{sub}</p>}
+      </div>
+    </div>
+  );
+}
 
-  function doSave() {
+function ConfigPanel({ onToast }) {
+  const [cfg, setCfg]       = useState(null);
+  const [loading, setLoad]  = useState(true);
+  const [apiKey, setApiKey] = useState("");
+  const [webhook, setHook]  = useState("");
+  const [limit, setLimit]   = useState(50);
+  const [showKey, setShowK] = useState(false);
+  const [saving, setSaving] = useState(false);
+
+  useEffect(() => {
+    GET("/config").then(d => {
+      const c = d.config;
+      setCfg(c);
+      setApiKey(c.google_places_api_key || "");
+      setHook(c.google_sheets_webhook_url || "");
+      setLimit(c.daily_lead_limit || 50);
+      setLoad(false);
+    }).catch(e => { setLoad(false); onToast("Error loading config: " + e.message); });
+  }, []);
+
+  async function doSave() {
     setSaving(true);
-    setTimeout(function(){
-      onSave({ apiKey:apiKey, sheetId:sheetId, dailyLimit:limit });
-      setSaving(false); setSaved(true);
-      setTimeout(function(){ setSaved(false); }, 2000);
-    }, 700);
+    try {
+      const body = {};
+      if (apiKey && !apiKey.includes("…")) body.google_places_api_key = apiKey;
+      if (webhook) body.google_sheets_webhook_url = webhook;
+      body.daily_lead_limit = limit;
+      const d = await POST("/config", body);
+      setCfg(d.config);
+      setLimit(d.config.daily_lead_limit);
+      onToast("Config saved!");
+    } catch(e) {
+      onToast("Error: " + e.message);
+    } finally {
+      setSaving(false);
+    }
   }
+
+  if (loading) return <div className="panel" style={{ padding:24, display:"flex", justifyContent:"center" }}><Spinner/></div>;
 
   return (
     <div className="panel">
@@ -213,43 +238,42 @@ function ConfigPanel(props) {
         <div className="field">
           <label className="flabel">Google Places API Key</label>
           <div style={{ display:"flex", gap:6 }}>
-            <input type={showKey?"text":"password"} value={apiKey} onChange={function(e){setApiKey(e.target.value);}} placeholder="AIzaSy…" className="finput"/>
-            <button className="icon-sq" onClick={function(){setShowKey(function(s){return !s;});}}><Ic k={showKey?"eyeOff":"eyeOn"} size={15}/></button>
+            <input type={showKey?"text":"password"} value={apiKey} onChange={e=>setApiKey(e.target.value)} placeholder="AIzaSy…" className="finput"/>
+            <button className="icon-sq" onClick={() => setShowK(s => !s)}><Ic k={showKey?"eyeOff":"eyeOn"} size={15}/></button>
           </div>
         </div>
         <div className="field">
-          <label className="flabel">Google Sheet ID</label>
-          <input type="text" value={sheetId} onChange={function(e){setSheetId(e.target.value);}} placeholder="1BxiM…" className="finput"/>
+          <label className="flabel">Apps Script Webhook URL</label>
+          <input type="text" value={webhook} onChange={e=>setHook(e.target.value)} placeholder="https://script.google.com/macros/…" className="finput"/>
         </div>
         <div className="field">
           <label className="flabel" style={{ display:"flex", justifyContent:"space-between" }}>
             Daily Lead Limit <span className="badge-i">{limit}</span>
           </label>
-          <input type="range" min={5} max={500} step={5} value={limit} onChange={function(e){setLimit(+e.target.value);}} className="fslider"/>
+          <input type="range" min={5} max={500} step={5} value={limit} onChange={e=>setLimit(+e.target.value)} className="fslider"/>
           <div style={{ display:"flex", justifyContent:"space-between", fontSize:".68rem", color:"var(--t3)", fontWeight:600, marginTop:2 }}><span>5</span><span>500</span></div>
         </div>
       </div>
       <div style={{ padding:"0 20px 16px" }}>
         <button className="btn-primary" style={{ width:"100%" }} onClick={doSave} disabled={saving}>
-          <Ic k={saving?"refresh":saved?"checkCircle":"save"} size={14} className={saving?"spin":""}/>
-          {saving?"Saving…":saved?"Saved!":"Save Config"}
+          <Ic k={saving?"refresh":"save"} size={14} className={saving?"spin":""}/>
+          {saving ? "Saving…" : "Save Config"}
         </button>
       </div>
     </div>
   );
 }
 
-function CityToggle(props) {
-  var activeCity = props.activeCity; var onSwitch = props.onSwitch;
+function CityToggle({ activeCity, onSwitch }) {
   return (
     <div className="panel">
       <div className="panel-hdr"><Ic k="pin" size={16}/><h2>Active Location</h2></div>
       <div style={{ padding:"12px 20px", display:"flex", flexWrap:"wrap", gap:7 }}>
-        {CITIES.map(function(city){
-          var short = city.split(",")[0];
-          var active = activeCity === city;
+        {CITIES.map(city => {
+          const short = city.split(",")[0];
+          const active = activeCity === city;
           return (
-            <button key={city} onClick={function(){ onSwitch(active?"":city); }} className={"chip "+(active?"chip-active":"")}>
+            <button key={city} onClick={() => onSwitch(active ? "" : city)} className={"chip " + (active?"chip-active":"")}>
               <Ic k="globe" size={11}/>{short}
             </button>
           );
@@ -257,31 +281,35 @@ function CityToggle(props) {
       </div>
       <div style={{ padding:"0 20px 10px", fontSize:".71rem", color:"var(--t3)", display:"flex", alignItems:"center", gap:5 }}>
         <Ic k="info" size={12}/>
-        {activeCity ? "Filtering: "+activeCity.split(",")[0] : "All cities active — click to focus"}
+        {activeCity ? "Filtering: " + activeCity.split(",")[0] : "All cities active — click to focus"}
       </div>
-      {activeCity && <div style={{ padding:"0 20px 14px" }}><button className="btn-ghost" onClick={function(){ onSwitch(""); }}>Clear filter</button></div>}
+      {activeCity && <div style={{ padding:"0 20px 14px" }}><button className="btn-ghost" onClick={() => onSwitch("")}>Clear filter</button></div>}
     </div>
   );
 }
 
-function LeadTable(props) {
-  var leads = props.leads;
-  var _p = useState(1); var page = _p[0]; var setPage = _p[1];
-  var _q = useState(""); var search = _q[0]; var setSearch = _q[1];
-  var prevQ = useRef(search);
+function LeadTable({ leads, loading, error, onRetry }) {
+  const [page, setPage]     = useState(1);
+  const [search, setSearch] = useState("");
+  const prevQ = useRef(search);
   if (prevQ.current !== search) { prevQ.current = search; if (page !== 1) setPage(1); }
 
-  var filtered = leads.filter(function(l){
+  if (loading) return <div className="panel" style={{ padding:40, display:"flex", justifyContent:"center" }}><Spinner size={22}/></div>;
+  if (error)   return <div className="panel"><ApiError msg={error} onRetry={onRetry}/></div>;
+
+  const filtered = leads.filter(l => {
     if (!search) return true;
-    var q = search.toLowerCase();
-    return (l.name+l.category+l.location+l.phone).toLowerCase().indexOf(q) !== -1;
+    const q = search.toLowerCase();
+    return (l.name + l.category + l.location + l.phone).toLowerCase().includes(q);
   });
-  var total = filtered.length;
-  var pages = Math.max(1, Math.ceil(total/PAGE_SIZE));
-  var start = (page-1)*PAGE_SIZE;
-  var slice = filtered.slice(start, start+PAGE_SIZE);
-  var lo = Math.max(1,page-2); var hi = Math.min(pages,lo+4);
-  var pnums = []; for (var x=lo;x<=hi;x++) pnums.push(x);
+  const total  = filtered.length;
+  const pages  = Math.max(1, Math.ceil(total / PAGE_SIZE));
+  const start  = (page - 1) * PAGE_SIZE;
+  const slice  = filtered.slice(start, start + PAGE_SIZE);
+  const lo     = Math.max(1, page - 2);
+  const hi     = Math.min(pages, lo + 4);
+  const pnums  = [];
+  for (let x = lo; x <= hi; x++) pnums.push(x);
 
   return (
     <div className="panel">
@@ -290,11 +318,11 @@ function LeadTable(props) {
         <span className="badge-i" style={{ marginLeft:4 }}>{fmt(total)}</span>
         <div className="search-box" style={{ marginLeft:"auto" }}>
           <Ic k="search" size={13}/>
-          <input value={search} onChange={function(e){setSearch(e.target.value);}} placeholder="Search leads…" className="search-input"/>
+          <input value={search} onChange={e=>setSearch(e.target.value)} placeholder="Search leads…" className="search-input"/>
         </div>
       </div>
       <div style={{ overflowX:"auto" }}>
-        {slice.length===0
+        {slice.length === 0
           ? <div className="tbl-empty"><Ic k="layers" size={22} style={{ opacity:.3 }}/>No leads found</div>
           : <table className="tbl">
               <thead><tr>
@@ -305,18 +333,16 @@ function LeadTable(props) {
                 <th><span><Ic k="clock" size={11}/>Found</span></th>
                 <th><span><Ic k="checkCircle" size={11}/>Status</span></th>
               </tr></thead>
-              <tbody>{slice.map(function(lead,idx){
-                return (
-                  <tr key={lead.place_id} className="trow" style={{ animationDelay:(idx*30)+"ms" }}>
-                    <td><span className="cat-tag">{lead.category}</span></td>
-                    <td className="name-cell">{lead.name}</td>
-                    <td className="mono small">{lead.phone || <span className="t3">N/A</span>}</td>
-                    <td className="t3 small">{lead.location.split(",")[0]}</td>
-                    <td className="t3 small mono">{new Date(lead.discovered_at).toLocaleDateString("en-IN",{day:"numeric",month:"short"})}</td>
-                    <td><span className="status-pill">Qualified</span></td>
-                  </tr>
-                );
-              })}</tbody>
+              <tbody>{slice.map((lead, idx) => (
+                <tr key={lead.place_id || idx} className="trow" style={{ animationDelay:(idx*30)+"ms" }}>
+                  <td><span className="cat-tag">{lead.category}</span></td>
+                  <td className="name-cell">{lead.name}</td>
+                  <td className="mono small">{lead.phone || <span className="t3">N/A</span>}</td>
+                  <td className="t3 small">{(lead.location||"").split(",")[0]}</td>
+                  <td className="t3 small mono">{lead.discovered_at ? new Date(lead.discovered_at).toLocaleDateString("en-IN",{day:"numeric",month:"short"}) : "—"}</td>
+                  <td><span className="status-pill">Qualified</span></td>
+                </tr>
+              ))}</tbody>
             </table>
         }
       </div>
@@ -324,9 +350,9 @@ function LeadTable(props) {
         <div className="pagination">
           <span className="t3 small">{start+1}–{Math.min(start+PAGE_SIZE,total)} of {fmt(total)}</span>
           <div style={{ display:"flex", gap:4 }}>
-            <button className="pag-btn" disabled={page===1} onClick={function(){setPage(function(p){return p-1;});}}><Ic k="chevL" size={13}/></button>
-            {pnums.map(function(n){ return <button key={n} className={"pag-btn "+(n===page?"pag-active":"")} onClick={function(){setPage(n);}}>{n}</button>; })}
-            <button className="pag-btn" disabled={page===pages} onClick={function(){setPage(function(p){return p+1;});}}><Ic k="chevR" size={13}/></button>
+            <button className="pag-btn" disabled={page===1} onClick={()=>setPage(p=>p-1)}><Ic k="chevL" size={13}/></button>
+            {pnums.map(n => <button key={n} className={"pag-btn "+(n===page?"pag-active":"")} onClick={()=>setPage(n)}>{n}</button>)}
+            <button className="pag-btn" disabled={page===pages} onClick={()=>setPage(p=>p+1)}><Ic k="chevR" size={13}/></button>
           </div>
         </div>
       )}
@@ -334,21 +360,44 @@ function LeadTable(props) {
   );
 }
 
-function DashboardTab(props) {
-  var running = props.running; var onToggle = props.onToggle;
-  var activeCity = props.activeCity; var onCitySwitch = props.onCitySwitch;
-  var config = props.config; var onConfigSave = props.onConfigSave;
-  var leadsToday=12; var leadsTotal=347; var callsToday=89;
-  var pct = Math.min(100,Math.round(leadsToday/config.dailyLimit*100));
-  var filteredLeads = activeCity ? MOCK_LEADS.filter(function(l){return l.location===activeCity;}) : MOCK_LEADS;
+function DashboardTab({ running, activeCity, onCitySwitch, onToast }) {
+  const [metrics, setMetrics]     = useState(null);
+  const [leads, setLeads]         = useState([]);
+  const [leadsLoad, setLeadsLoad] = useState(true);
+  const [leadsErr, setLeadsErr]   = useState(null);
+  const [mLoad, setMLoad]         = useState(true);
+
+  const fetchMetrics = useCallback(() => {
+    GET("/metrics").then(d => { setMetrics(d); setMLoad(false); }).catch(e => { setMLoad(false); });
+  }, []);
+
+  const fetchLeads = useCallback(() => {
+    setLeadsLoad(true); setLeadsErr(null);
+    GET("/leads?limit=500").then(d => { setLeads(d.leads || []); setLeadsLoad(false); })
+      .catch(e => { setLeadsErr(e.message); setLeadsLoad(false); });
+  }, []);
+
+  useEffect(() => {
+    fetchMetrics();
+    fetchLeads();
+    const t = setInterval(fetchMetrics, running ? 5000 : 15000);
+    return () => clearInterval(t);
+  }, [running]);
+
+  const leadsToday  = metrics?.leads_today  || 0;
+  const leadsTotal  = metrics?.leads_total  || 0;
+  const callsToday  = metrics?.api_calls_today || 0;
+  const dailyLimit  = metrics?.daily_lead_limit || 50;
+  const pct         = Math.min(100, Math.round(leadsToday / dailyLimit * 100));
+  const filteredLeads = activeCity ? leads.filter(l => l.location === activeCity) : leads;
 
   return (
     <div>
       <div className="stats-row">
-        <StatCard iconKey="trending"   label="Daily Leads"      value={leadsToday+" / "+config.dailyLimit} sub={pct+"% of quota"} accent="#6366f1"/>
-        <StatCard iconKey="layers"     label="Total Leads"      value={fmt(leadsTotal)} sub="all time"       accent="#0ea5e9"/>
-        <StatCard iconKey="zap"        label="API Calls Today"  value={fmt(callsToday)} sub="Places API (New)" accent="#f59e0b"/>
-        <StatCard iconKey="pin"        label="Active City"      value={activeCity?activeCity.split(",")[0]:"All Cities"} sub={activeCity?"filtered":"no filter"} accent="#10b981"/>
+        <StatCard iconKey="trending"   label="Daily Leads"     value={mLoad ? "—" : leadsToday+" / "+dailyLimit} sub={mLoad?"loading…":pct+"% of quota"} accent="#6366f1"/>
+        <StatCard iconKey="layers"     label="Total Leads"     value={mLoad ? "—" : fmt(leadsTotal)} sub="all time" accent="#0ea5e9"/>
+        <StatCard iconKey="zap"        label="API Calls Today" value={mLoad ? "—" : fmt(callsToday)} sub="Places API (New)" accent="#f59e0b"/>
+        <StatCard iconKey="pin"        label="Active City"     value={activeCity ? activeCity.split(",")[0] : "All Cities"} sub={activeCity ? "filtered" : "no filter"} accent="#10b981"/>
       </div>
       <div className="main-grid">
         <div className="col">
@@ -356,65 +405,71 @@ function DashboardTab(props) {
             <div className="panel-hdr"><Ic k="bar" size={16}/><h2>Today's Progress</h2></div>
             <div style={{ padding:"16px 20px 8px" }}>
               <div style={{ display:"flex", justifyContent:"space-between", fontSize:".75rem", fontWeight:600, color:"var(--t2)", marginBottom:8 }}>
-                <span>Daily quota</span><span className="mono">{leadsToday} / {config.dailyLimit}</span>
+                <span>Daily quota</span>
+                <span className="mono">{leadsToday} / {dailyLimit}</span>
               </div>
               <div className="prog-track"><div className="prog-fill" style={{ width:pct+"%" }}/></div>
               <div style={{ fontSize:".69rem", color:"var(--t3)", marginTop:5, fontWeight:600 }}>{pct}% complete</div>
             </div>
             <div className="api-stat"><Ic k="zap" size={13}/><span>API calls today</span><span className="mono" style={{ marginLeft:"auto", color:"var(--amber)" }}>{fmt(callsToday)}</span></div>
           </div>
-          <ConfigPanel config={config} onSave={onConfigSave}/>
+          <ConfigPanel onToast={onToast}/>
           <CityToggle activeCity={activeCity} onSwitch={onCitySwitch}/>
         </div>
         <div style={{ flex:1, minWidth:0 }}>
-          <LeadTable leads={filteredLeads}/>
+          <LeadTable leads={filteredLeads} loading={leadsLoad} error={leadsErr} onRetry={fetchLeads}/>
         </div>
       </div>
     </div>
   );
 }
 
-/* ══════════════════════════════
+/* ═══════════════════════════════════════════════════════════
    TAB 2 — CATEGORIES
-══════════════════════════════ */
-function CatModal(props) {
-  var cat = props.cat; var onClose = props.onClose; var onSave = props.onSave;
-  var isNew = !cat;
-  var _n = useState(cat?cat.name:"");     var name=_n[0]; var setName=_n[1];
-  var _e = useState(cat?cat.emoji:"🏢"); var emoji=_e[0]; var setEmoji=_e[1];
-  var _c = useState(cat?cat.color:"#6366f1"); var color=_c[0]; var setColor=_c[1];
-  function doSave() {
+═══════════════════════════════════════════════════════════ */
+function CatModal({ cat, onClose, onSave }) {
+  const isNew = !cat;
+  const [name, setName]   = useState(cat ? cat.name  : "");
+  const [emoji, setEmoji] = useState(cat ? cat.emoji : "🏢");
+  const [color, setColor] = useState(cat ? cat.color : "#6366f1");
+  const [saving, setSave] = useState(false);
+
+  async function doSave() {
     if (!name.trim()) return;
-    onSave({ id: cat?cat.id:("c_"+Date.now()), name:name.trim(), emoji:emoji, color:color, count:cat?cat.count:0, active:cat?cat.active:true });
+    setSave(true);
+    await onSave({ id: cat?.id, name: name.trim(), emoji, color, active: cat ? cat.active : true });
+    setSave(false);
     onClose();
   }
+
   return (
-    <Modal title={isNew?"Add Category":"Edit Category"} onClose={onClose}>
+    <Modal title={isNew ? "Add Category" : "Edit Category"} onClose={onClose}>
       <div style={{ display:"flex", flexDirection:"column", gap:16 }}>
         <div className="field">
           <label className="flabel">Category Name</label>
-          <input className="finput" value={name} onChange={function(e){setName(e.target.value);}} placeholder="e.g. Florists"/>
+          <input className="finput" value={name} onChange={e=>setName(e.target.value)} placeholder="e.g. Florists"/>
         </div>
         <div className="field">
           <label className="flabel">Emoji Icon</label>
           <div style={{ display:"flex", flexWrap:"wrap", gap:6 }}>
-            {EMOJIS.map(function(em){
-              return <button key={em} onClick={function(){setEmoji(em);}} style={{ width:36, height:36, borderRadius:9, border:em===emoji?"2px solid var(--indigo)":"1px solid var(--border)", background:em===emoji?"var(--indigo-lt)":"var(--bg)", fontSize:18, cursor:"pointer", transition:"all .15s" }}>{em}</button>;
-            })}
+            {EMOJIS.map(em => (
+              <button key={em} onClick={()=>setEmoji(em)} style={{ width:36, height:36, borderRadius:9, border:em===emoji?"2px solid var(--indigo)":"1px solid var(--border)", background:em===emoji?"var(--indigo-lt)":"var(--bg)", fontSize:18, cursor:"pointer", transition:"all .15s" }}>{em}</button>
+            ))}
           </div>
         </div>
         <div className="field">
           <label className="flabel">Accent Color</label>
           <div style={{ display:"flex", flexWrap:"wrap", gap:6 }}>
-            {COLORS.map(function(c){
-              return <button key={c} onClick={function(){setColor(c);}} style={{ width:28, height:28, borderRadius:"50%", background:c, border:c===color?"3px solid var(--t1)":"2px solid transparent", cursor:"pointer", transition:"all .15s", boxShadow:c===color?"0 0 0 2px white, 0 0 0 4px "+c:"none" }}/>;
-            })}
+            {COLORS.map(c => (
+              <button key={c} onClick={()=>setColor(c)} style={{ width:28, height:28, borderRadius:"50%", background:c, border:c===color?"3px solid var(--t1)":"2px solid transparent", cursor:"pointer", transition:"all .15s", boxShadow:c===color?"0 0 0 2px white, 0 0 0 4px "+c:"none" }}/>
+            ))}
           </div>
         </div>
         <div style={{ display:"flex", gap:8, justifyContent:"flex-end", marginTop:4 }}>
           <button className="btn-ghost" onClick={onClose}>Cancel</button>
-          <button className="btn-primary" onClick={doSave} disabled={!name.trim()}>
-            <Ic k="save" size={14}/>{isNew?"Add Category":"Save Changes"}
+          <button className="btn-primary" onClick={doSave} disabled={!name.trim() || saving}>
+            <Ic k={saving?"refresh":"save"} size={14} className={saving?"spin":""}/>
+            {saving ? "Saving…" : isNew ? "Add Category" : "Save Changes"}
           </button>
         </div>
       </div>
@@ -422,106 +477,153 @@ function CatModal(props) {
   );
 }
 
-function CategoriesTab(props) {
-  var toast = props.toast;
-  var _c = useState(INIT_CATS); var cats=_c[0]; var setCats=_c[1];
-  var _e = useState(null);      var editCat=_e[0]; var setEditCat=_e[1];
-  var _a = useState(false);     var showAdd=_a[0]; var setShowAdd=_a[1];
-  var _s = useState("");        var search=_s[0]; var setSearch=_s[1];
+function CategoriesTab({ onToast }) {
+  const [cats, setCats]       = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError]     = useState(null);
+  const [editCat, setEditCat] = useState(null);
+  const [showAdd, setShowAdd] = useState(false);
+  const [search, setSearch]   = useState("");
+  const [syncing, setSyncing] = useState(false);
 
-  var filtered = cats.filter(function(c){ return !search || c.name.toLowerCase().indexOf(search.toLowerCase())!==-1; });
-  var activeCount = cats.filter(function(c){return c.active;}).length;
-  var totalLeads  = cats.reduce(function(a,c){return a+c.count;},0);
+  const fetchCats = useCallback(() => {
+    setLoading(true); setError(null);
+    GET("/categories").then(d => { setCats(d.categories || []); setLoading(false); })
+      .catch(e => { setError(e.message); setLoading(false); });
+  }, []);
 
-  function doToggle(id) { setCats(function(cs){return cs.map(function(c){return c.id===id?{id:c.id,name:c.name,emoji:c.emoji,color:c.color,count:c.count,active:!c.active}:c;});}); }
-  function doDelete(id) { setCats(function(cs){return cs.filter(function(c){return c.id!==id;});}); }
-  function doSave(updated) {
-    setCats(function(cs){
-      var exists = cs.some(function(c){return c.id===updated.id;});
-      if (exists) return cs.map(function(c){return c.id===updated.id?updated:c;});
-      return cs.concat([updated]);
-    });
-    toast(updated.id.indexOf("c_")===0?"Category added!":"Category updated!");
+  useEffect(() => { fetchCats(); }, []);
+
+  async function doToggle(cat) {
+    try {
+      const d = await POST("/categories", { ...cat, active: !cat.active });
+      setCats(cs => cs.map(c => c.id === cat.id ? d.category : c));
+    } catch(e) { onToast("Error: " + e.message); }
   }
+
+  async function doDelete(id) {
+    try {
+      await DELETE("/categories/" + id);
+      setCats(cs => cs.filter(c => c.id !== id));
+      onToast("Category deleted.");
+    } catch(e) { onToast("Error: " + e.message); }
+  }
+
+  async function doSave(payload) {
+    try {
+      const d = await POST("/categories", payload);
+      const updated = d.category;
+      setCats(cs => {
+        const exists = cs.some(c => c.id === updated.id);
+        if (exists) return cs.map(c => c.id === updated.id ? updated : c);
+        return [...cs, updated];
+      });
+      onToast(payload.id ? "Category updated!" : "Category added!");
+    } catch(e) { onToast("Error: " + e.message); }
+  }
+
+  async function doSync() {
+    setSyncing(true);
+    try {
+      const d = await POST("/categories/sync");
+      onToast(`Synced ${d.business_categories.length} active categories to bot config!`);
+    } catch(e) { onToast("Error: " + e.message); }
+    finally { setSyncing(false); }
+  }
+
+  const filtered   = cats.filter(c => !search || c.name.toLowerCase().includes(search.toLowerCase()));
+  const activeCount = cats.filter(c => c.active).length;
+  const totalLeads  = cats.reduce((a, c) => a + (c.count || 0), 0);
 
   return (
     <div>
       <div className="section-topbar">
         <div>
           <h2 className="sec-title">Search Categories</h2>
-          <p className="sec-sub">{activeCount} of {cats.length} active — bot scrapes these on each run</p>
+          <p className="sec-sub">{loading ? "Loading…" : activeCount+" of "+cats.length+" active — bot scrapes these on each run"}</p>
         </div>
         <div style={{ display:"flex", gap:10, alignItems:"center", flexWrap:"wrap" }}>
-          <div className="search-box"><Ic k="search" size={13}/><input value={search} onChange={function(e){setSearch(e.target.value);}} placeholder="Filter…" className="search-input"/></div>
-          <button className="btn-primary" onClick={function(){setEditCat(null);setShowAdd(true);}}><Ic k="plus" size={14}/>Add Category</button>
+          <button className="btn-ghost" onClick={doSync} disabled={syncing} title="Push active categories → config.json (bot uses this list)">
+            <Ic k={syncing?"refresh":"sync"} size={14} className={syncing?"spin":""}/>
+            {syncing ? "Syncing…" : "Sync to Bot"}
+          </button>
+          <div className="search-box"><Ic k="search" size={13}/><input value={search} onChange={e=>setSearch(e.target.value)} placeholder="Filter…" className="search-input"/></div>
+          <button className="btn-primary" onClick={() => { setEditCat(null); setShowAdd(true); }}><Ic k="plus" size={14}/>Add Category</button>
         </div>
       </div>
 
-      <div className="cat-stats-bar">
-        <div className="cs-item"><span className="cs-num">{cats.length}</span><span className="t3 small">Total</span></div>
-        <div className="cs-div"/>
-        <div className="cs-item"><span className="cs-num" style={{color:"#22c55e"}}>{activeCount}</span><span className="t3 small">Active</span></div>
-        <div className="cs-div"/>
-        <div className="cs-item"><span className="cs-num" style={{color:"#94a3b8"}}>{cats.length-activeCount}</span><span className="t3 small">Paused</span></div>
-        <div className="cs-div"/>
-        <div className="cs-item"><span className="cs-num">{fmt(totalLeads)}</span><span className="t3 small">Total Leads</span></div>
-      </div>
+      {loading ? (
+        <div style={{ display:"flex", justifyContent:"center", padding:60 }}><Spinner size={24}/></div>
+      ) : error ? (
+        <ApiError msg={error} onRetry={fetchCats}/>
+      ) : (
+        <>
+          <div className="cat-stats-bar">
+            <div className="cs-item"><span className="cs-num">{cats.length}</span><span className="t3 small">Total</span></div>
+            <div className="cs-div"/>
+            <div className="cs-item"><span className="cs-num" style={{color:"#22c55e"}}>{activeCount}</span><span className="t3 small">Active</span></div>
+            <div className="cs-div"/>
+            <div className="cs-item"><span className="cs-num" style={{color:"#94a3b8"}}>{cats.length - activeCount}</span><span className="t3 small">Paused</span></div>
+            <div className="cs-div"/>
+            <div className="cs-item"><span className="cs-num">{fmt(totalLeads)}</span><span className="t3 small">Total Leads</span></div>
+          </div>
 
-      <div className="cat-grid">
-        {filtered.map(function(cat){
-          return (
-            <div key={cat.id} className={"cat-card"+(cat.active?"":" cat-off")}>
-              <div style={{ display:"flex", alignItems:"center", gap:12, marginBottom:12 }}>
-                <div style={{ width:42, height:42, borderRadius:10, display:"flex", alignItems:"center", justifyContent:"center", fontSize:20, background:cat.color+"22", border:"1.5px solid "+cat.color+"44", flexShrink:0 }}>{cat.emoji}</div>
-                <div style={{ flex:1, minWidth:0 }}>
-                  <div style={{ fontWeight:700, fontSize:".9rem", color:"var(--t1)" }}>{cat.name}</div>
-                  <div style={{ fontSize:".71rem", color:"var(--t3)", marginTop:2 }}>{fmt(cat.count)} leads found</div>
+          <div className="cat-grid">
+            {filtered.map(cat => (
+              <div key={cat.id} className={"cat-card" + (cat.active ? "" : " cat-off")}>
+                <div style={{ display:"flex", alignItems:"center", gap:12, marginBottom:12 }}>
+                  <div style={{ width:42, height:42, borderRadius:10, display:"flex", alignItems:"center", justifyContent:"center", fontSize:20, background:cat.color+"22", border:"1.5px solid "+cat.color+"44", flexShrink:0 }}>{cat.emoji}</div>
+                  <div style={{ flex:1, minWidth:0 }}>
+                    <div style={{ fontWeight:700, fontSize:".9rem", color:"var(--t1)" }}>{cat.name}</div>
+                    <div style={{ fontSize:".71rem", color:"var(--t3)", marginTop:2 }}>{fmt(cat.count)} leads found</div>
+                  </div>
+                  <div style={{ display:"flex", gap:5, flexShrink:0 }}>
+                    <button className="icon-sq-sm" onClick={() => { setEditCat(cat); setShowAdd(false); }}><Ic k="edit" size={13}/></button>
+                    <button className="icon-sq-sm dang" onClick={() => doDelete(cat.id)}><Ic k="trash" size={13}/></button>
+                  </div>
                 </div>
-                <div style={{ display:"flex", gap:5, flexShrink:0 }}>
-                  <button className="icon-sq-sm" onClick={function(){setEditCat(cat);setShowAdd(false);}}><Ic k="edit" size={13}/></button>
-                  <button className="icon-sq-sm dang" onClick={function(){doDelete(cat.id);}}><Ic k="trash" size={13}/></button>
+                <div style={{ display:"flex", alignItems:"center", gap:8, paddingTop:10, borderTop:"1px solid var(--bs)" }}>
+                  <div style={{ width:10, height:10, borderRadius:"50%", background:cat.color, flexShrink:0 }}/>
+                  <span className="t3 small">{cat.color}</span>
+                  <button className={"tog-btn " + (cat.active ? "tog-on" : "tog-off")} onClick={() => doToggle(cat)}>
+                    <span className="tog-knob"/>
+                  </button>
                 </div>
               </div>
-              <div style={{ display:"flex", alignItems:"center", gap:8, paddingTop:10, borderTop:"1px solid var(--bs)" }}>
-                <div style={{ width:10, height:10, borderRadius:"50%", background:cat.color, flexShrink:0 }}/>
-                <span className="t3 small">{cat.color}</span>
-                <button className={"tog-btn "+(cat.active?"tog-on":"tog-off")} onClick={function(){doToggle(cat.id);}}>
-                  <span className="tog-knob"/>
-                </button>
-              </div>
-            </div>
-          );
-        })}
-        <button className="cat-add-tile" onClick={function(){setEditCat(null);setShowAdd(true);}}>
-          <div style={{ width:44, height:44, borderRadius:11, background:"var(--bs)", display:"grid", placeItems:"center" }}><Ic k="plus" size={22}/></div>
-          <span>Add Category</span>
-        </button>
-      </div>
+            ))}
+            <button className="cat-add-tile" onClick={() => { setEditCat(null); setShowAdd(true); }}>
+              <div style={{ width:44, height:44, borderRadius:11, background:"var(--bs)", display:"grid", placeItems:"center" }}><Ic k="plus" size={22}/></div>
+              <span>Add Category</span>
+            </button>
+          </div>
+        </>
+      )}
 
-      {(showAdd||editCat) && <CatModal cat={editCat} onClose={function(){setShowAdd(false);setEditCat(null);}} onSave={doSave}/>}
+      {(showAdd || editCat) && (
+        <CatModal cat={editCat} onClose={() => { setShowAdd(false); setEditCat(null); }} onSave={doSave}/>
+      )}
     </div>
   );
 }
 
-/* ══════════════════════════════
+/* ═══════════════════════════════════════════════════════════
    TAB 3 — DM TEMPLATES
-══════════════════════════════ */
-function TplPreview(props) {
-  var tpl = props.tpl; var onClose = props.onClose;
-  var rendered = (function(){
-    var b = tpl.body;
-    var sub = { name:"Ravi Kumar", business_name:"Ravi Kumar Tailors", category:"tailors", sender_name:"Priya" };
-    Object.keys(sub).forEach(function(k){ b = b.split("{{"+k+"}}").join(sub[k]); });
+═══════════════════════════════════════════════════════════ */
+function TplPreview({ tpl, onClose }) {
+  const [copied, setCopied] = useState(false);
+  const rendered = (() => {
+    let b = tpl.body;
+    const sub = { name:"Ravi Kumar", business_name:"Ravi Kumar Tailors", category:"tailors", sender_name:"Priya", city:"Hyderabad", phone:"+91 98765 43210" };
+    Object.keys(sub).forEach(k => { b = b.split("{{"+k+"}}").join(sub[k]); });
     return b;
   })();
-  var _cp = useState(false); var copied=_cp[0]; var setCopied=_cp[1];
   function doCopy() {
     if (navigator.clipboard) {
-      navigator.clipboard.writeText(rendered).then(function(){ setCopied(true); setTimeout(function(){setCopied(false);},1800); });
+      navigator.clipboard.writeText(rendered).then(() => { setCopied(true); setTimeout(()=>setCopied(false),1800); });
     }
   }
   return (
-    <Modal title={"Preview — "+tpl.name} onClose={onClose}>
+    <Modal title={"Preview — " + tpl.name} onClose={onClose}>
       <div style={{ display:"flex", flexDirection:"column", gap:14 }}>
         {tpl.subject && (
           <div>
@@ -533,11 +635,11 @@ function TplPreview(props) {
           <div className="flabel" style={{ marginBottom:5 }}>Message Body</div>
           <pre style={{ padding:14, background:"var(--bg)", borderRadius:9, border:"1px solid var(--border)", fontSize:".8rem", lineHeight:1.65, whiteSpace:"pre-wrap", fontFamily:"'Plus Jakarta Sans',sans-serif", color:"var(--t1)", minHeight:140 }}>{rendered}</pre>
         </div>
-        <div style={{ display:"flex", gap:5, flexWrap:"wrap" }}>{tpl.variables.map(function(v){ return <VarPill key={v} v={v}/>; })}</div>
+        <div style={{ display:"flex", gap:5, flexWrap:"wrap" }}>{(tpl.variables||[]).map(v => <VarPill key={v} v={v}/>)}</div>
         <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center" }}>
           <span style={{ fontSize:".72rem", color:"var(--t3)" }}>Sent {fmt(tpl.sentCount)} times · {tpl.replyRate}% reply rate</span>
           <button className="btn-primary" onClick={doCopy}>
-            <Ic k={copied?"checkCircle":"copy"} size={14}/>{copied?"Copied!":"Copy Body"}
+            <Ic k={copied?"checkCircle":"copy"} size={14}/>{copied ? "Copied!" : "Copy Body"}
           </button>
         </div>
       </div>
@@ -545,68 +647,79 @@ function TplPreview(props) {
   );
 }
 
-function TplEditor(props) {
-  var tpl = props.tpl; var onClose = props.onClose; var onSave = props.onSave;
-  var isNew = !tpl;
-  var _n = useState(tpl?tpl.name:"");        var name=_n[0]; var setName=_n[1];
-  var _t = useState(tpl?tpl.tag:"outreach"); var tag=_t[0]; var setTag=_t[1];
-  var _s = useState(tpl?tpl.subject:"");     var subj=_s[0]; var setSubj=_s[1];
-  var _b = useState(tpl?tpl.body:"");        var body=_b[0]; var setBody=_b[1];
+function TplEditor({ tpl, onClose, onSave }) {
+  const isNew = !tpl;
+  const [name,  setName]  = useState(tpl?.name    || "");
+  const [tag,   setTag]   = useState(tpl?.tag     || "outreach");
+  const [subj,  setSubj]  = useState(tpl?.subject || "");
+  const [body,  setBody]  = useState(tpl?.body    || "");
+  const [saving, setSave] = useState(false);
 
-  var allText = body+subj;
-  var matches = allText.match(/\{\{(\w+)\}\}/g)||[];
-  var detectedVars = matches.filter(function(v,i,arr){ return arr.indexOf(v)===i; }).map(function(v){ return v.replace(/[{}]/g,""); });
+  const allText     = body + subj;
+  const matches     = allText.match(/\{\{(\w+)\}\}/g) || [];
+  const detectedVars = [...new Set(matches)].map(v => v.replace(/[{}]/g, ""));
+  function insertVar(v) { setBody(b => b + "{{" + v + "}}"); }
 
-  function insertVar(v) { setBody(function(b){ return b+"{{"+v+"}}"; }); }
-  function doSave() {
-    if (!name.trim()||!body.trim()) return;
-    onSave({ id:tpl?tpl.id:("t_"+Date.now()), name:name.trim(), tag:tag, subject:subj, body:body, variables:detectedVars, sentCount:tpl?tpl.sentCount:0, replyRate:tpl?tpl.replyRate:0, createdAt:tpl?tpl.createdAt:new Date().toISOString().slice(0,10) });
+  async function doSave() {
+    if (!name.trim() || !body.trim()) return;
+    setSave(true);
+    await onSave({
+      id:        tpl?.id,
+      name:      name.trim(),
+      tag, subject: subj, body,
+      variables: detectedVars,
+      sentCount: tpl?.sentCount || 0,
+      replyRate: tpl?.replyRate || 0,
+      createdAt: tpl?.createdAt || null,
+    });
+    setSave(false);
     onClose();
   }
+
   return (
-    <Modal title={isNew?"New Template":"Edit Template"} onClose={onClose}>
+    <Modal title={isNew ? "New Template" : "Edit Template"} onClose={onClose}>
       <div style={{ display:"flex", flexDirection:"column", gap:14 }}>
         <div style={{ display:"grid", gridTemplateColumns:"1fr auto", gap:10 }}>
           <div className="field">
             <label className="flabel">Template Name</label>
-            <input className="finput" value={name} onChange={function(e){setName(e.target.value);}} placeholder="e.g. WhatsApp Intro"/>
+            <input className="finput" value={name} onChange={e=>setName(e.target.value)} placeholder="e.g. WhatsApp Intro"/>
           </div>
           <div className="field">
             <label className="flabel">Tag</label>
-            <select className="finput" value={tag} onChange={function(e){setTag(e.target.value);}} style={{ minWidth:110 }}>
-              {TAG_OPTS.map(function(t){ return <option key={t} value={t}>{t}</option>; })}
+            <select className="finput" value={tag} onChange={e=>setTag(e.target.value)} style={{ minWidth:110 }}>
+              {TAG_OPTS.map(t => <option key={t} value={t}>{t}</option>)}
             </select>
           </div>
         </div>
         <div className="field">
           <label className="flabel">Subject <span className="t3" style={{ textTransform:"none", fontWeight:400 }}>(optional)</span></label>
-          <input className="finput" value={subj} onChange={function(e){setSubj(e.target.value);}} placeholder="e.g. Quick question for {{business_name}}"/>
+          <input className="finput" value={subj} onChange={e=>setSubj(e.target.value)} placeholder="e.g. Quick question for {{business_name}}"/>
         </div>
         <div className="field">
           <label className="flabel" style={{ display:"flex", justifyContent:"space-between" }}>
             <span>Message Body</span>
-            <span className="t3 small" style={{ fontWeight:400, textTransform:"none" }}>{"Use {{variable}} for personalisation"}</span>
+            <span className="t3 small" style={{ fontWeight:400, textTransform:"none" }}>Use {"{{variable}}"} for personalisation</span>
           </label>
-          <textarea className="finput" value={body} onChange={function(e){setBody(e.target.value);}} rows={7} style={{ resize:"vertical", fontFamily:"inherit", lineHeight:1.6 }} placeholder={"Hi {{name}},\n\nI noticed {{business_name}} doesn't have a website…"}/>
+          <textarea className="finput" value={body} onChange={e=>setBody(e.target.value)} rows={7} style={{ resize:"vertical", fontFamily:"inherit", lineHeight:1.6 }} placeholder={"Hi {{name}},\n\nI noticed {{business_name}} doesn't have a website…"}/>
         </div>
         <div className="field">
           <label className="flabel">Quick-insert Variables</label>
           <div style={{ display:"flex", gap:6, flexWrap:"wrap" }}>
-            {["name","business_name","category","sender_name","city"].map(function(v){
-              return <button key={v} onClick={function(){insertVar(v);}} className="chip" style={{ fontFamily:"monospace", fontSize:".72rem" }}>{"{{"+v+"}}"}</button>;
-            })}
+            {["name","business_name","category","sender_name","city","phone"].map(v => (
+              <button key={v} onClick={() => insertVar(v)} className="chip" style={{ fontFamily:"monospace", fontSize:".72rem" }}>{"{{"+v+"}}"}</button>
+            ))}
           </div>
         </div>
-        {detectedVars.length>0 && (
+        {detectedVars.length > 0 && (
           <div style={{ display:"flex", gap:5, flexWrap:"wrap", padding:"8px 12px", background:"#fffbeb", borderRadius:8, border:"1px solid #fde68a" }}>
             <span style={{ fontSize:".71rem", color:"#92400e", fontWeight:600, marginRight:4 }}>Detected:</span>
-            {detectedVars.map(function(v){ return <VarPill key={v} v={v}/>; })}
+            {detectedVars.map(v => <VarPill key={v} v={v}/>)}
           </div>
         )}
         <div style={{ display:"flex", gap:8, justifyContent:"flex-end" }}>
           <button className="btn-ghost" onClick={onClose}>Cancel</button>
-          <button className="btn-primary" onClick={doSave} disabled={!name.trim()||!body.trim()}>
-            <Ic k="save" size={14}/>{isNew?"Create Template":"Save Changes"}
+          <button className="btn-primary" onClick={doSave} disabled={!name.trim() || !body.trim() || saving}>
+            <Ic k={saving?"refresh":"save"} size={14} className={saving?"spin":""}/>{saving?"Saving…":isNew?"Create Template":"Save Changes"}
           </button>
         </div>
       </div>
@@ -614,100 +727,127 @@ function TplEditor(props) {
   );
 }
 
-function TemplatesTab(props) {
-  var toast = props.toast;
-  var _tp = useState(INIT_TPLS);  var templates=_tp[0]; var setTemplates=_tp[1];
-  var _ed = useState(null);        var editing=_ed[0]; var setEditing=_ed[1];
-  var _nw = useState(false);       var showNew=_nw[0]; var setShowNew=_nw[1];
-  var _pv = useState(null);        var previewing=_pv[0]; var setPreviewing=_pv[1];
-  var _fi = useState("all");       var filter=_fi[0]; var setFilter=_fi[1];
-  var _sq = useState("");          var search=_sq[0]; var setSearch=_sq[1];
+function TemplatesTab({ onToast }) {
+  const [templates, setTemplates] = useState([]);
+  const [loading, setLoading]     = useState(true);
+  const [error, setError]         = useState(null);
+  const [editing, setEditing]     = useState(null);
+  const [showNew, setShowNew]     = useState(false);
+  const [previewing, setPreview]  = useState(null);
+  const [filter, setFilter]       = useState("all");
+  const [search, setSearch]       = useState("");
 
-  var usedTags = TAG_OPTS.filter(function(t){ return templates.some(function(tp){return tp.tag===t;}); });
-  var tags = ["all"].concat(usedTags);
+  const fetchTpls = useCallback(() => {
+    setLoading(true); setError(null);
+    GET("/templates").then(d => { setTemplates(d.templates || []); setLoading(false); })
+      .catch(e => { setError(e.message); setLoading(false); });
+  }, []);
 
-  var visible = templates.filter(function(t){
-    var matchTag = filter==="all"||t.tag===filter;
-    var q = search.toLowerCase();
-    var matchQ = !search || t.name.toLowerCase().indexOf(q)!==-1 || t.body.toLowerCase().indexOf(q)!==-1;
-    return matchTag&&matchQ;
-  });
+  useEffect(() => { fetchTpls(); }, []);
 
-  function doDelete(id) { setTemplates(function(ts){return ts.filter(function(t){return t.id!==id;});}); toast("Template deleted."); }
-  function doSave(tpl) {
-    setTemplates(function(ts){
-      var exists = ts.some(function(t){return t.id===tpl.id;});
-      if (exists) return ts.map(function(t){return t.id===tpl.id?tpl:t;});
-      return ts.concat([tpl]);
-    });
-    toast(tpl.id.indexOf("t_")===0?"Template created!":"Template updated!");
+  async function doDelete(id) {
+    try {
+      await DELETE("/templates/" + id);
+      setTemplates(ts => ts.filter(t => t.id !== id));
+      onToast("Template deleted.");
+    } catch(e) { onToast("Error: " + e.message); }
   }
 
-  var avgReply = templates.length ? Math.round(templates.reduce(function(a,t){return a+t.replyRate;},0)/templates.length) : 0;
+  async function doSave(payload) {
+    try {
+      const d = await POST("/templates", payload);
+      const updated = d.template;
+      setTemplates(ts => {
+        const exists = ts.some(t => t.id === updated.id);
+        if (exists) return ts.map(t => t.id === updated.id ? updated : t);
+        return [...ts, updated];
+      });
+      onToast(payload.id ? "Template updated!" : "Template created!");
+    } catch(e) { onToast("Error: " + e.message); }
+  }
+
+  const usedTags = TAG_OPTS.filter(t => templates.some(tp => tp.tag === t));
+  const tags     = ["all", ...usedTags];
+  const visible  = templates.filter(t => {
+    const matchTag = filter === "all" || t.tag === filter;
+    const q = search.toLowerCase();
+    const matchQ = !search || t.name.toLowerCase().includes(q) || t.body.toLowerCase().includes(q);
+    return matchTag && matchQ;
+  });
+  const avgReply = templates.length ? Math.round(templates.reduce((a,t) => a + (t.replyRate||0), 0) / templates.length) : 0;
 
   return (
     <div>
       <div className="section-topbar">
         <div>
           <h2 className="sec-title">DM Templates</h2>
-          <p className="sec-sub">{templates.length} templates · avg {avgReply}% reply rate</p>
+          <p className="sec-sub">{loading ? "Loading…" : templates.length+" templates · avg "+avgReply+"% reply rate"}</p>
         </div>
         <div style={{ display:"flex", gap:10, alignItems:"center", flexWrap:"wrap" }}>
-          <div className="search-box"><Ic k="search" size={13}/><input value={search} onChange={function(e){setSearch(e.target.value);}} placeholder="Search templates…" className="search-input"/></div>
-          <button className="btn-primary" onClick={function(){setEditing(null);setShowNew(true);}}><Ic k="plus" size={14}/>New Template</button>
+          <div className="search-box"><Ic k="search" size={13}/><input value={search} onChange={e=>setSearch(e.target.value)} placeholder="Search templates…" className="search-input"/></div>
+          <button className="btn-primary" onClick={() => { setEditing(null); setShowNew(true); }}><Ic k="plus" size={14}/>New Template</button>
         </div>
       </div>
 
-      <div style={{ display:"flex", gap:6, flexWrap:"wrap", marginBottom:20 }}>
-        {tags.map(function(t){
-          var c = t==="all" ? "#5B67F8" : (TAG_CLR[t]||"#5B67F8");
-          var isActive = filter===t;
-          return (
-            <button key={t} onClick={function(){setFilter(t);}} style={{ padding:"5px 14px", borderRadius:99, fontSize:".75rem", fontWeight:700, fontFamily:"inherit", cursor:"pointer", transition:"all .15s", background:isActive?c:"var(--surface)", color:isActive?"#fff":"var(--t2)", border:isActive?"1.5px solid "+c:"1.5px solid var(--border)", boxShadow:isActive?"0 2px 8px "+c+"44":"none" }}>
-              {t==="all"?"All Templates":t}
-              {t!=="all" && <span style={{ marginLeft:5, opacity:.7, fontSize:".68rem" }}>({templates.filter(function(tp){return tp.tag===t;}).length})</span>}
-            </button>
-          );
-        })}
-      </div>
+      {!loading && !error && (
+        <div style={{ display:"flex", gap:6, flexWrap:"wrap", marginBottom:20 }}>
+          {tags.map(t => {
+            const c = t === "all" ? "#5B67F8" : (TAG_CLR[t] || "#5B67F8");
+            const isActive = filter === t;
+            return (
+              <button key={t} onClick={() => setFilter(t)} style={{ padding:"5px 14px", borderRadius:99, fontSize:".75rem", fontWeight:700, fontFamily:"inherit", cursor:"pointer", transition:"all .15s", background:isActive?c:"var(--surface)", color:isActive?"#fff":"var(--t2)", border:isActive?"1.5px solid "+c:"1.5px solid var(--border)", boxShadow:isActive?"0 2px 8px "+c+"44":"none" }}>
+                {t === "all" ? "All Templates" : t}
+                {t !== "all" && <span style={{ marginLeft:5, opacity:.7, fontSize:".68rem" }}>({templates.filter(tp=>tp.tag===t).length})</span>}
+              </button>
+            );
+          })}
+        </div>
+      )}
 
-      {visible.length===0
-        ? <div className="tbl-empty" style={{ background:"var(--surface)", borderRadius:"var(--r)", border:"1px solid var(--border)", padding:48 }}><Ic k="msg" size={28} style={{opacity:.2}}/>No templates match</div>
-        : <div className="tpl-grid">
-            {visible.map(function(tpl){
-              var tc = TAG_CLR[tpl.tag]||"#5B67F8";
-              return (
-                <div key={tpl.id} className="tpl-card">
-                  <div style={{ display:"flex", alignItems:"flex-start", gap:10, marginBottom:8 }}>
-                    <div style={{ flex:1, minWidth:0 }}>
-                      <div style={{ fontWeight:700, fontSize:".88rem", color:"var(--t1)", marginBottom:4, overflow:"hidden", textOverflow:"ellipsis", whiteSpace:"nowrap" }}>{tpl.name}</div>
-                      <span style={{ display:"inline-flex", padding:"2px 9px", borderRadius:6, background:tc+"22", color:tc, fontSize:".68rem", fontWeight:800, textTransform:"uppercase", letterSpacing:".05em" }}>{tpl.tag}</span>
-                    </div>
-                    <div style={{ display:"flex", gap:5, flexShrink:0 }}>
-                      <button className="icon-sq-sm" onClick={function(){setPreviewing(tpl);}} title="Preview"><Ic k="eyeOn" size={13}/></button>
-                      <button className="icon-sq-sm" onClick={function(){setEditing(tpl);setShowNew(false);}} title="Edit"><Ic k="edit" size={13}/></button>
-                      <button className="icon-sq-sm dang" onClick={function(){doDelete(tpl.id);}} title="Delete"><Ic k="trash" size={13}/></button>
-                    </div>
+      {loading ? (
+        <div style={{ display:"flex", justifyContent:"center", padding:60 }}><Spinner size={24}/></div>
+      ) : error ? (
+        <ApiError msg={error} onRetry={fetchTpls}/>
+      ) : visible.length === 0 ? (
+        <div className="tbl-empty" style={{ background:"var(--surface)", borderRadius:"var(--r)", border:"1px solid var(--border)", padding:48 }}>
+          <Ic k="msg" size={28} style={{opacity:.2}}/>No templates match
+        </div>
+      ) : (
+        <div className="tpl-grid">
+          {visible.map(tpl => {
+            const tc = TAG_CLR[tpl.tag] || "#5B67F8";
+            return (
+              <div key={tpl.id} className="tpl-card">
+                <div style={{ display:"flex", alignItems:"flex-start", gap:10, marginBottom:8 }}>
+                  <div style={{ flex:1, minWidth:0 }}>
+                    <div style={{ fontWeight:700, fontSize:".88rem", color:"var(--t1)", marginBottom:4, overflow:"hidden", textOverflow:"ellipsis", whiteSpace:"nowrap" }}>{tpl.name}</div>
+                    <span style={{ display:"inline-flex", padding:"2px 9px", borderRadius:6, background:tc+"22", color:tc, fontSize:".68rem", fontWeight:800, textTransform:"uppercase", letterSpacing:".05em" }}>{tpl.tag}</span>
                   </div>
-                  {tpl.subject && <div style={{ fontSize:".74rem", color:"var(--t2)", marginBottom:8, fontWeight:600, overflow:"hidden", textOverflow:"ellipsis", whiteSpace:"nowrap" }}>✉️ {tpl.subject}</div>}
-                  <div style={{ fontSize:".77rem", color:"var(--t2)", lineHeight:1.55, display:"-webkit-box", WebkitLineClamp:3, WebkitBoxOrient:"vertical", overflow:"hidden", background:"var(--bg)", padding:"10px 12px", borderRadius:8, border:"1px solid var(--bs)", fontStyle:"italic", marginBottom:8 }}>{tpl.body}</div>
-                  {tpl.variables.length>0 && (
-                    <div style={{ display:"flex", gap:4, flexWrap:"wrap", marginBottom:8 }}>
-                      {tpl.variables.map(function(v){ return <VarPill key={v} v={v}/>; })}
-                    </div>
-                  )}
-                  <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", paddingTop:8, borderTop:"1px solid var(--bs)" }}>
-                    <div style={{ display:"flex", gap:12 }}>
-                      <span style={{ display:"inline-flex", alignItems:"center", gap:4, fontSize:".71rem", color:"var(--t3)", fontWeight:600 }}><Ic k="send" size={11}/>{fmt(tpl.sentCount)} sent</span>
-                      <span style={{ display:"inline-flex", alignItems:"center", gap:4, fontSize:".71rem", fontWeight:600, color:tpl.replyRate>20?"#22c55e":"var(--t3)" }}><Ic k="trending" size={11}/>{tpl.replyRate}% replies</span>
-                    </div>
-                    <span className="t3 small mono">{tpl.createdAt}</span>
+                  <div style={{ display:"flex", gap:5, flexShrink:0 }}>
+                    <button className="icon-sq-sm" onClick={() => setPreview(tpl)} title="Preview"><Ic k="eyeOn" size={13}/></button>
+                    <button className="icon-sq-sm" onClick={() => { setEditing(tpl); setShowNew(false); }} title="Edit"><Ic k="edit" size={13}/></button>
+                    <button className="icon-sq-sm dang" onClick={() => doDelete(tpl.id)} title="Delete"><Ic k="trash" size={13}/></button>
                   </div>
                 </div>
-              );
-            })}
-          </div>
-      }
+                {tpl.subject && <div style={{ fontSize:".74rem", color:"var(--t2)", marginBottom:8, fontWeight:600, overflow:"hidden", textOverflow:"ellipsis", whiteSpace:"nowrap" }}>✉️ {tpl.subject}</div>}
+                <div style={{ fontSize:".77rem", color:"var(--t2)", lineHeight:1.55, display:"-webkit-box", WebkitLineClamp:3, WebkitBoxOrient:"vertical", overflow:"hidden", background:"var(--bg)", padding:"10px 12px", borderRadius:8, border:"1px solid var(--bs)", fontStyle:"italic", marginBottom:8 }}>{tpl.body}</div>
+                {(tpl.variables||[]).length > 0 && (
+                  <div style={{ display:"flex", gap:4, flexWrap:"wrap", marginBottom:8 }}>
+                    {tpl.variables.map(v => <VarPill key={v} v={v}/>)}
+                  </div>
+                )}
+                <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", paddingTop:8, borderTop:"1px solid var(--bs)" }}>
+                  <div style={{ display:"flex", gap:12 }}>
+                    <span style={{ display:"inline-flex", alignItems:"center", gap:4, fontSize:".71rem", color:"var(--t3)", fontWeight:600 }}><Ic k="send" size={11}/>{fmt(tpl.sentCount)} sent</span>
+                    <span style={{ display:"inline-flex", alignItems:"center", gap:4, fontSize:".71rem", fontWeight:600, color:tpl.replyRate>20?"#22c55e":"var(--t3)" }}><Ic k="trending" size={11}/>{tpl.replyRate}% replies</span>
+                  </div>
+                  <span className="t3 small mono">{tpl.createdAt}</span>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      )}
 
       <div style={{ background:"var(--surface)", border:"1.5px solid var(--border)", borderRadius:"var(--r)", padding:"18px 20px", boxShadow:"var(--sh)", marginTop:8 }}>
         <div style={{ display:"flex", alignItems:"center", gap:8, marginBottom:10 }}>
@@ -715,54 +855,97 @@ function TemplatesTab(props) {
           <span style={{ fontWeight:700, fontSize:".82rem" }}>Available Variables</span>
         </div>
         <div style={{ display:"flex", flexWrap:"wrap", gap:10 }}>
-          {[["name","Contact name"],["business_name","Business name"],["category","Business type"],["sender_name","Your name"],["city","Lead city"],["phone","Phone number"]].map(function(pair){
-            return (
-              <div key={pair[0]} style={{ display:"flex", flexDirection:"column", gap:3 }}>
-                <VarPill v={pair[0]}/>
-                <span style={{ fontSize:".65rem", color:"var(--t3)", paddingLeft:2 }}>{pair[1]}</span>
-              </div>
-            );
-          })}
+          {[["name","Contact name"],["business_name","Business name"],["category","Business type"],["sender_name","Your name"],["city","Lead city"],["phone","Phone number"]].map(pair => (
+            <div key={pair[0]} style={{ display:"flex", flexDirection:"column", gap:3 }}>
+              <VarPill v={pair[0]}/>
+              <span style={{ fontSize:".65rem", color:"var(--t3)", paddingLeft:2 }}>{pair[1]}</span>
+            </div>
+          ))}
         </div>
       </div>
 
-      {(showNew||editing) && <TplEditor tpl={editing} onClose={function(){setShowNew(false);setEditing(null);}} onSave={doSave}/>}
-      {previewing && <TplPreview tpl={previewing} onClose={function(){setPreviewing(null);}}/>}
+      {(showNew || editing) && <TplEditor tpl={editing} onClose={() => { setShowNew(false); setEditing(null); }} onSave={doSave}/>}
+      {previewing && <TplPreview tpl={previewing} onClose={() => setPreview(null)}/>}
     </div>
   );
 }
 
-/* ══════════════════════════════
-   ROOT
-══════════════════════════════ */
-var TABS = [
+/* ═══════════════════════════════════════════════════════════
+   ROOT APP
+═══════════════════════════════════════════════════════════ */
+const TABS = [
   { key:"dashboard",  label:"Dashboard",    icon:"bar"  },
   { key:"categories", label:"Categories",   icon:"grid" },
   { key:"templates",  label:"DM Templates", icon:"msg"  },
 ];
 
 function App() {
-  var _tab = useState("dashboard");  var tab=_tab[0]; var setTab=_tab[1];
-  var _run = useState(false);        var running=_run[0]; var setRunning=_run[1];
-  var _bl  = useState(false);        var botLoading=_bl[0]; var setBotLoading=_bl[1];
-  var _ac  = useState("");           var activeCity=_ac[0]; var setActiveCity=_ac[1];
-  var _cfg = useState({ apiKey:"AIzaSy••••zXYZ", sheetId:"1BxiMVs8BtRS", dailyLimit:30 });
-  var config=_cfg[0]; var setConfig=_cfg[1];
-  var _tm  = useState(null);         var toastMsg=_tm[0]; var setToastMsg=_tm[1];
+  const [tab, setTab]           = useState("dashboard");
+  const [running, setRunning]   = useState(false);
+  const [botLoad, setBotLoad]   = useState(false);
+  const [activeCity, setACity]  = useState("");
+  const [toastMsg, setToastMsg] = useState(null);
+  const [apiOk, setApiOk]       = useState(true);
 
-  function toast(msg){ setToastMsg(null); setTimeout(function(){setToastMsg(msg);},10); }
-  function handleBotToggle() {
-    setBotLoading(true);
-    setTimeout(function(){
-      setRunning(function(r){return !r;});
-      setBotLoading(false);
-      toast(running?"Bot stopped.":"Bot started!");
-    }, 900);
+  function toast(msg) { setToastMsg(null); setTimeout(() => setToastMsg(msg), 10); }
+
+  // Poll bot running state from /metrics every 5s
+  useEffect(() => {
+    let alive = true;
+    async function poll() {
+      try {
+        const d = await GET("/metrics");
+        if (!alive) return;
+        setRunning(d.bot_running || false);
+        setACity(d.active_city === "ALL" ? "" : (d.active_city || ""));
+        setApiOk(true);
+      } catch(e) {
+        if (alive) setApiOk(false);
+      }
+    }
+    poll();
+    const t = setInterval(poll, running ? 5000 : 10000);
+    return () => { alive = false; clearInterval(t); };
+  }, [running]);
+
+  async function handleBotToggle() {
+    setBotLoad(true);
+    try {
+      if (running) {
+        await POST("/bot/stop");
+        toast("Stop requested — finishing current pair…");
+        setRunning(false);
+      } else {
+        await POST("/bot/run");
+        toast("Bot started!");
+        setRunning(true);
+      }
+    } catch(e) {
+      toast("Error: " + e.message);
+    } finally {
+      setBotLoad(false);
+    }
+  }
+
+  async function handleCitySwitch(city) {
+    setACity(city);
+    try {
+      await POST("/active-city", { city });
+    } catch(e) {
+      toast("Error: " + e.message);
+    }
   }
 
   return (
     <div className="app">
       <style>{CSS}</style>
+
+      {!apiOk && (
+        <div style={{ background:"#fef2f2", borderBottom:"1px solid #fecaca", padding:"8px 24px", display:"flex", alignItems:"center", gap:8, fontSize:".78rem", color:"#991b1b", fontWeight:600 }}>
+          <Ic k="wifiOff" size={14}/>
+          Cannot reach API at <code style={{ background:"#fee2e2", padding:"0 6px", borderRadius:4 }}>{API_BASE}</code> — start the FastAPI server to connect live data.
+        </div>
+      )}
 
       <header className="app-hdr">
         <div style={{ display:"flex", alignItems:"center", gap:12 }}>
@@ -773,58 +956,52 @@ function App() {
           </div>
         </div>
         <nav className="tab-nav">
-          {TABS.map(function(t){
-            return (
-              <button key={t.key} onClick={function(){setTab(t.key);}} className={"tab-btn "+(tab===t.key?"tab-active":"")}>
-                <Ic k={t.icon} size={14}/><span>{t.label}</span>
-              </button>
-            );
-          })}
+          {TABS.map(t => (
+            <button key={t.key} onClick={() => setTab(t.key)} className={"tab-btn " + (tab===t.key?"tab-active":"")}>
+              <Ic k={t.icon} size={14}/><span>{t.label}</span>
+            </button>
+          ))}
         </nav>
         <div style={{ display:"flex", alignItems:"center", gap:10 }}>
-          <span className="ref-hint"><Ic k="clock" size={11}/>{new Date().toLocaleTimeString("en-IN",{hour:"2-digit",minute:"2-digit"})}</span>
-          <BotControl running={running} onToggle={handleBotToggle} loading={botLoading}/>
+          <span className="ref-hint">
+            <span style={{ width:7, height:7, borderRadius:"50%", background: apiOk ? "#22c55e" : "#ef4444", display:"inline-block" }}/>
+            {apiOk ? "Live" : "Offline"}
+          </span>
+          <BotControl running={running} onToggle={handleBotToggle} loading={botLoad}/>
         </div>
       </header>
 
       <main style={{ paddingTop:4 }}>
-        {tab==="dashboard"  && <DashboardTab running={running} onToggle={handleBotToggle} activeCity={activeCity} onCitySwitch={setActiveCity} config={config} onConfigSave={function(c){setConfig(function(p){return Object.assign({},p,c);});}}/>}
-        {tab==="categories" && <CategoriesTab toast={toast}/>}
-        {tab==="templates"  && <TemplatesTab  toast={toast}/>}
+        {tab === "dashboard"  && <DashboardTab running={running} activeCity={activeCity} onCitySwitch={handleCitySwitch} onToast={toast}/>}
+        {tab === "categories" && <CategoriesTab onToast={toast}/>}
+        {tab === "templates"  && <TemplatesTab  onToast={toast}/>}
       </main>
 
-      <footer style={{ marginTop:40, paddingTop:18, borderTop:"1px solid var(--border)", fontSize:".7rem", color:"var(--t3)", textAlign:"center", fontWeight:500 }}>
-        LeadRadar v2 &nbsp;·&nbsp; FastAPI + Google Places API (New) &nbsp;·&nbsp; {running?"🟢 Bot running":"⚪ Bot idle"}
-      </footer>
-
-      {toastMsg && <Toast msg={toastMsg} onDone={function(){setToastMsg(null);}}/>}
+      {toastMsg && <Toast msg={toastMsg} onDone={() => setToastMsg(null)}/>}
     </div>
   );
 }
 
+/* ═══════════════════════════════════════════════════════════
+   CSS
+═══════════════════════════════════════════════════════════ */
 const CSS = `
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap');
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{
-  --bg:#F5F7FA;--surface:#fff;--border:#E4E9F0;--bs:#EEF2F7;
-  --t1:#0D1B2A;--t2:#4A5568;--t3:#9AA5B4;
-  --indigo:#5B67F8;--indigo-lt:#EEF0FE;
-  --amber:#F59E0B;--r:14px;
-  --sh:0 1px 3px rgba(13,27,42,.05),0 1px 2px rgba(13,27,42,.04);
-  --sh-md:0 4px 20px rgba(13,27,42,.08),0 1px 4px rgba(13,27,42,.04);
-  font-family:'Plus Jakarta Sans',system-ui,sans-serif;color:var(--t1);
-}
-body{background:var(--bg);min-height:100vh}
-.mono{font-family:'JetBrains Mono',monospace}.small{font-size:.78rem}.t3{color:var(--t3)}
-.app{max-width:1440px;margin:0 auto;padding:0 28px 52px}
-.app-hdr{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;padding:18px 0 0;border-bottom:1px solid var(--border);margin-bottom:28px}
-.brand-icon{width:40px;height:40px;border-radius:12px;background:linear-gradient(135deg,#5B67F8,#818cf8);display:grid;place-items:center;color:#fff;box-shadow:0 3px 10px rgba(91,103,248,.35);flex-shrink:0}
-.brand-name{font-size:1.1rem;font-weight:800;letter-spacing:-.025em}.brand-sub{font-size:.68rem;color:var(--t3);font-weight:500}
-.ref-hint{display:flex;align-items:center;gap:4px;color:var(--t3);font-size:.72rem}
-.tab-nav{display:flex;gap:2px;background:var(--bs);padding:4px;border-radius:11px;flex-shrink:0}
-.tab-btn{display:flex;align-items:center;gap:6px;padding:6px 16px;border-radius:8px;font-size:.79rem;font-weight:600;font-family:inherit;cursor:pointer;border:none;background:transparent;color:var(--t3);transition:all .18s}
-.tab-btn:hover{color:var(--t1)}.tab-active{background:var(--surface)!important;color:var(--t1)!important;box-shadow:var(--sh)}
-.bot-btn{display:flex;align-items:center;gap:8px;padding:8px 18px;border-radius:10px;font-size:.82rem;font-weight:700;font-family:inherit;cursor:pointer;border:none;transition:all .2s;letter-spacing:.01em}
+:root{--bg:#F5F7FA;--surface:#ffffff;--border:#E2E8F0;--bs:#F1F5F9;--t1:#0F172A;--t2:#475569;--t3:#94A3B8;--indigo:#5B67F8;--indigo-lt:#EEF0FF;--amber:#F59E0B;--r:14px;--sh:0 1px 3px rgba(0,0,0,.06),0 1px 2px rgba(0,0,0,.04);--sh-md:0 4px 12px rgba(0,0,0,.09),0 2px 4px rgba(0,0,0,.06)}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(--t1);-webkit-font-smoothing:antialiased;min-height:100vh}
+.app{padding:0 24px 60px}
+.mono{font-family:'JetBrains Mono',monospace}
+.small{font-size:.78rem}.t3{color:var(--t3)}
+.app-hdr{display:flex;align-items:center;justify-content:space-between;padding:14px 0 18px;border-bottom:1px solid var(--border);margin-bottom:22px;flex-wrap:wrap;gap:12px;position:sticky;top:0;background:var(--bg);z-index:100}
+.brand-icon{width:38px;height:38px;border-radius:10px;background:linear-gradient(135deg,#5B67F8,#818cf8);color:#fff;display:grid;place-items:center;box-shadow:0 4px 12px rgba(91,103,248,.3)}
+.brand-name{font-size:.95rem;font-weight:800;color:var(--t1);letter-spacing:-.02em}
+.brand-sub{font-size:.68rem;color:var(--t3);font-weight:500}
+.tab-nav{display:flex;gap:4px;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:4px}
+.tab-btn{display:inline-flex;align-items:center;gap:7px;padding:7px 16px;border-radius:9px;border:none;background:transparent;color:var(--t3);font-size:.8rem;font-weight:600;font-family:inherit;cursor:pointer;transition:all .18s;white-space:nowrap}
+.tab-btn:hover{color:var(--t2)}.tab-active{background:var(--indigo)!important;color:#fff!important;box-shadow:0 2px 8px rgba(91,103,248,.28)}
+.ref-hint{display:inline-flex;align-items:center;gap:5px;font-size:.72rem;font-weight:600;color:var(--t3)}
+.bot-btn{display:inline-flex;align-items:center;gap:9px;padding:8px 18px;border-radius:11px;border:none;font-size:.82rem;font-weight:700;font-family:inherit;cursor:pointer;transition:all .2s;white-space:nowrap}
 .bot-start{background:linear-gradient(135deg,#22c55e,#16a34a);color:#fff;box-shadow:0 2px 10px rgba(34,197,94,.28)}
 .bot-start:hover{transform:translateY(-1px);box-shadow:0 4px 16px rgba(34,197,94,.38)}
 .bot-stop{background:linear-gradient(135deg,#ef4444,#dc2626);color:#fff;box-shadow:0 2px 10px rgba(239,68,68,.28)}
@@ -908,7 +1085,7 @@ select.finput{cursor:pointer}
 .modal-header h3{font-size:.95rem;font-weight:800;color:var(--t1)}
 .modal-close{width:30px;height:30px;border-radius:7px;border:1px solid var(--border);background:var(--bg);cursor:pointer;display:grid;place-items:center;color:var(--t3);transition:all .15s}
 .modal-close:hover{background:var(--border);color:var(--t1)}.modal-body{padding:20px 22px}
-.toast{position:fixed;bottom:24px;right:24px;background:var(--t1);color:#fff;padding:10px 18px;border-radius:11px;font-size:.8rem;font-weight:600;display:flex;align-items:center;gap:8px;box-shadow:0 8px 24px rgba(13,27,42,.22);animation:toastIn .22s ease;z-index:2000}
+.toast{position:fixed;bottom:24px;right:24px;color:#fff;padding:10px 18px;border-radius:11px;font-size:.8rem;font-weight:600;display:flex;align-items:center;gap:8px;box-shadow:0 8px 24px rgba(13,27,42,.22);animation:toastIn .22s ease;z-index:2000}
 @keyframes toastIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
 @keyframes ping{75%,100%{transform:scale(2.2);opacity:0}}
 .spin{animation:spinK .7s linear infinite}@keyframes spinK{to{transform:rotate(360deg)}}

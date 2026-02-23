@@ -1,0 +1,1080 @@
+2026-02-23 21:12:51,446 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:12:51,567 [INFO] api — LeadRadar API v3.1 starting up.
+2026-02-23 21:12:51,812 [INFO] watchfiles.main — 8 changes detected
+2026-02-23 21:12:52,429 [INFO] watchfiles.main — 2 changes detected
+2026-02-23 21:12:52,797 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:12:53,151 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:12:56,123 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:12:56,531 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:13:18,052 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:13:18,416 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:13:35,364 [INFO] bot — ============================================================
+2026-02-23 21:13:35,398 [INFO] bot — LeadGenBot run started
+2026-02-23 21:13:35,401 [INFO] bot — Active city filter : ALL
+2026-02-23 21:13:35,440 [INFO] bot — Daily lead limit   : 50
+2026-02-23 21:13:35,440 [INFO] bot — Max calls/min      : 30
+2026-02-23 21:13:35,441 [INFO] bot — Max calls/run      : 0 (0=unlimited)
+2026-02-23 21:13:35,442 [INFO] bot — Webhook URL        : (not set)
+2026-02-23 21:13:35,442 [INFO] bot — ============================================================
+2026-02-23 21:13:35,442 [INFO] bot — Dedup seed: 0 existing place_ids loaded from CSV.
+2026-02-23 21:13:35,443 [INFO] bot — Processing pair: Salons_Hyderabad_India
+2026-02-23 21:13:35,443 [INFO] bot — Searching: 'Salons in Hyderabad, India'
+2026-02-23 21:13:35,519 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:13:37,678 [ERROR] bot — Places API auth/config error 403 for 'Salons in Hyderabad, India': {
+  "error": {
+    "code": 403,
+    "message": "Method doesn't allow unregistered callers (callers without established identity). Please use API Key or other form of API consumer identity to call this
+2026-02-23 21:13:37,682 [INFO] bot —   Pair Salons_Hyderabad_India: 0 leads found, 0 new saved.
+2026-02-23 21:13:37,687 [INFO] bot — Processing pair: Salons_Chennai_India
+2026-02-23 21:13:37,687 [INFO] bot — Searching: 'Salons in Chennai, India'
+2026-02-23 21:13:37,747 [INFO] watchfiles.main — 3 changes detected
+2026-02-23 21:13:38,975 [ERROR] bot — Places API auth/config error 403 for 'Salons in Chennai, India': {
+  "error": {
+    "code": 403,
+    "message": "Method doesn't allow unregistered callers (callers without established identity). Please use API Key or other form of API consumer identity to call this
+2026-02-23 21:13:38,978 [INFO] bot —   Pair Salons_Chennai_India: 0 leads found, 0 new saved.
+2026-02-23 21:13:38,980 [INFO] bot — Processing pair: Salons_Pune_India
+2026-02-23 21:13:38,980 [INFO] bot — Searching: 'Salons in Pune, India'
+2026-02-23 21:13:39,055 [INFO] watchfiles.main — 2 changes detected
+2026-02-23 21:13:39,815 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:13:40,099 [ERROR] bot — Places API auth/config error 403 for 'Salons in Pune, India': {
+  "error": {
+    "code": 403,
+    "message": "Method doesn't allow unregistered callers (callers without established identity). Please use API Key or other form of API consumer identity to call this
+2026-02-23 21:13:40,105 [INFO] bot —   Pair Salons_Pune_India: 0 leads found, 0 new saved.
+2026-02-23 21:13:40,111 [INFO] bot — Processing pair: Salons_Jaipur_India
+2026-02-23 21:13:40,112 [INFO] bot — Searching: 'Salons in Jaipur, India'
+2026-02-23 21:13:40,169 [INFO] watchfiles.main — 2 changes detected
+2026-02-23 21:13:42,301 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:13:43,546 [INFO] bot — Stop requested — bot will halt after the current pair.
+2026-02-23 21:13:45,657 [ERROR] bot — Places API auth/config error 403 for 'Salons in Jaipur, India': {
+  "error": {
+    "code": 403,
+    "message": "Method doesn't allow unregistered callers (callers without established identity). Please use API Key or other form of API consumer identity to call this
+2026-02-23 21:13:45,660 [INFO] bot —   Pair Salons_Jaipur_India: 0 leads found, 0 new saved.
+2026-02-23 21:13:45,663 [INFO] bot — Stop flag detected — exiting run loop.
+2026-02-23 21:13:45,670 [INFO] bot — ============================================================
+2026-02-23 21:13:45,671 [INFO] bot — Run complete. New leads: 0 | API calls this run: 4
+2026-02-23 21:13:45,671 [INFO] bot — ============================================================
+2026-02-23 21:13:45,751 [INFO] watchfiles.main — 2 changes detected
+2026-02-23 21:13:54,870 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:13:57,635 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:13:58,828 [INFO] bot — ============================================================
+2026-02-23 21:13:58,828 [INFO] bot — LeadGenBot run started
+2026-02-23 21:13:58,828 [INFO] bot — Active city filter : ALL
+2026-02-23 21:13:58,829 [INFO] bot — Daily lead limit   : 50
+2026-02-23 21:13:58,829 [INFO] bot — Max calls/min      : 30
+2026-02-23 21:13:58,829 [INFO] bot — Max calls/run      : 0 (0=unlimited)
+2026-02-23 21:13:58,829 [INFO] bot — Webhook URL        : (not set)
+2026-02-23 21:13:58,830 [INFO] bot — ============================================================
+2026-02-23 21:13:58,835 [INFO] bot — Dedup seed: 0 existing place_ids loaded from CSV.
+2026-02-23 21:13:58,877 [INFO] bot — Skip (Done): Salons_Hyderabad_India
+2026-02-23 21:13:58,891 [INFO] bot — Skip (Done): Salons_Chennai_India
+2026-02-23 21:13:58,905 [INFO] bot — Skip (Done): Salons_Pune_India
+2026-02-23 21:13:58,909 [INFO] bot — Skip (Done): Salons_Jaipur_India
+2026-02-23 21:13:58,925 [INFO] bot — Processing pair: Salons_Lucknow_India
+2026-02-23 21:13:58,927 [INFO] bot — Searching: 'Salons in Lucknow, India'
+2026-02-23 21:13:58,999 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:14:00,568 [ERROR] bot — Places API auth/config error 403 for 'Salons in Lucknow, India': {
+  "error": {
+    "code": 403,
+    "message": "Method doesn't allow unregistered callers (callers without established identity). Please use API Key or other form of API consumer identity to call this
+2026-02-23 21:14:00,571 [INFO] bot —   Pair Salons_Lucknow_India: 0 leads found, 0 new saved.
+2026-02-23 21:14:00,573 [INFO] bot — Processing pair: Bakeries_Hyderabad_India
+2026-02-23 21:14:00,573 [INFO] bot — Searching: 'Bakeries in Hyderabad, India'
+2026-02-23 21:14:00,659 [INFO] watchfiles.main — 2 changes detected
+2026-02-23 21:14:02,289 [ERROR] bot — Places API auth/config error 403 for 'Bakeries in Hyderabad, India': {
+  "error": {
+    "code": 403,
+    "message": "Method doesn't allow unregistered callers (callers without established identity). Please use API Key or other form of API consumer identity to call this
+2026-02-23 21:14:02,293 [INFO] bot —   Pair Bakeries_Hyderabad_India: 0 leads found, 0 new saved.
+2026-02-23 21:14:02,295 [INFO] bot — Processing pair: Bakeries_Chennai_India
+2026-02-23 21:14:02,296 [INFO] bot — Searching: 'Bakeries in Chennai, India'
+2026-02-23 21:14:02,374 [INFO] watchfiles.main — 2 changes detected
+2026-02-23 21:14:02,890 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:14:05,875 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:14:05,885 [ERROR] bot — Places API auth/config error 403 for 'Bakeries in Chennai, India': {
+  "error": {
+    "code": 403,
+    "message": "Method doesn't allow unregistered callers (callers without established identity). Please use API Key or other form of API consumer identity to call this
+2026-02-23 21:14:05,892 [INFO] bot —   Pair Bakeries_Chennai_India: 0 leads found, 0 new saved.
+2026-02-23 21:14:05,893 [INFO] bot — Processing pair: Bakeries_Pune_India
+2026-02-23 21:14:05,898 [INFO] bot — Searching: 'Bakeries in Pune, India'
+2026-02-23 21:14:06,242 [INFO] watchfiles.main — 2 changes detected
+2026-02-23 21:14:07,106 [ERROR] bot — Places API auth/config error 403 for 'Bakeries in Pune, India': {
+  "error": {
+    "code": 403,
+    "message": "Method doesn't allow unregistered callers (callers without established identity). Please use API Key or other form of API consumer identity to call this
+2026-02-23 21:14:07,109 [INFO] bot —   Pair Bakeries_Pune_India: 0 leads found, 0 new saved.
+2026-02-23 21:14:07,111 [INFO] bot — Processing pair: Bakeries_Jaipur_India
+2026-02-23 21:14:07,112 [INFO] bot — Searching: 'Bakeries in Jaipur, India'
+2026-02-23 21:14:07,199 [INFO] watchfiles.main — 2 changes detected
+2026-02-23 21:14:08,537 [ERROR] bot — Places API auth/config error 403 for 'Bakeries in Jaipur, India': {
+  "error": {
+    "code": 403,
+    "message": "Method doesn't allow unregistered callers (callers without established identity). Please use API Key or other form of API consumer identity to call this
+2026-02-23 21:14:08,538 [INFO] bot —   Pair Bakeries_Jaipur_India: 0 leads found, 0 new saved.
+2026-02-23 21:14:08,539 [INFO] bot — Processing pair: Bakeries_Lucknow_India
+2026-02-23 21:14:08,539 [INFO] bot — Searching: 'Bakeries in Lucknow, India'
+2026-02-23 21:14:08,622 [INFO] watchfiles.main — 2 changes detected
+2026-02-23 21:14:09,982 [ERROR] bot — Places API auth/config error 403 for 'Bakeries in Lucknow, India': {
+  "error": {
+    "code": 403,
+    "message": "Method doesn't allow unregistered callers (callers without established identity). Please use API Key or other form of API consumer identity to call this
+2026-02-23 21:14:09,983 [INFO] bot —   Pair Bakeries_Lucknow_India: 0 leads found, 0 new saved.
+2026-02-23 21:14:09,984 [INFO] bot — Processing pair: Clinics_Hyderabad_India
+2026-02-23 21:14:09,984 [INFO] bot — Searching: 'Clinics in Hyderabad, India'
+2026-02-23 21:14:10,040 [INFO] watchfiles.main — 2 changes detected
+2026-02-23 21:14:11,731 [ERROR] bot — Places API auth/config error 403 for 'Clinics in Hyderabad, India': {
+  "error": {
+    "code": 403,
+    "message": "Method doesn't allow unregistered callers (callers without established identity). Please use API Key or other form of API consumer identity to call this
+2026-02-23 21:14:11,735 [INFO] bot —   Pair Clinics_Hyderabad_India: 0 leads found, 0 new saved.
+2026-02-23 21:14:11,736 [INFO] bot — Processing pair: Clinics_Chennai_India
+2026-02-23 21:14:11,736 [INFO] bot — Searching: 'Clinics in Chennai, India'
+2026-02-23 21:14:11,808 [INFO] watchfiles.main — 2 changes detected
+2026-02-23 21:14:13,222 [ERROR] bot — Places API auth/config error 403 for 'Clinics in Chennai, India': {
+  "error": {
+    "code": 403,
+    "message": "Method doesn't allow unregistered callers (callers without established identity). Please use API Key or other form of API consumer identity to call this
+2026-02-23 21:14:13,223 [INFO] bot —   Pair Clinics_Chennai_India: 0 leads found, 0 new saved.
+2026-02-23 21:14:13,224 [INFO] bot — Processing pair: Clinics_Pune_India
+2026-02-23 21:14:13,224 [INFO] bot — Searching: 'Clinics in Pune, India'
+2026-02-23 21:14:13,319 [INFO] watchfiles.main — 2 changes detected
+2026-02-23 21:14:14,076 [INFO] watchfiles.main — 4 changes detected
+2026-02-23 21:14:14,482 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:14:15,200 [ERROR] bot — Places API auth/config error 403 for 'Clinics in Pune, India': {
+  "error": {
+    "code": 403,
+    "message": "Method doesn't allow unregistered callers (callers without established identity). Please use API Key or other form of API consumer identity to call this
+2026-02-23 21:14:15,216 [INFO] bot —   Pair Clinics_Pune_India: 0 leads found, 0 new saved.
+2026-02-23 21:14:15,221 [INFO] bot — Processing pair: Clinics_Jaipur_India
+2026-02-23 21:14:15,222 [INFO] bot — Searching: 'Clinics in Jaipur, India'
+2026-02-23 21:14:15,302 [INFO] watchfiles.main — 2 changes detected
+2026-02-23 21:14:16,914 [ERROR] bot — Places API auth/config error 403 for 'Clinics in Jaipur, India': {
+  "error": {
+    "code": 403,
+    "message": "Method doesn't allow unregistered callers (callers without established identity). Please use API Key or other form of API consumer identity to call this
+2026-02-23 21:14:16,917 [INFO] bot —   Pair Clinics_Jaipur_India: 0 leads found, 0 new saved.
+2026-02-23 21:14:16,921 [INFO] bot — Processing pair: Clinics_Lucknow_India
+2026-02-23 21:14:16,921 [INFO] bot — Searching: 'Clinics in Lucknow, India'
+2026-02-23 21:14:16,974 [INFO] watchfiles.main — 2 changes detected
+2026-02-23 21:14:18,242 [ERROR] bot — Places API auth/config error 403 for 'Clinics in Lucknow, India': {
+  "error": {
+    "code": 403,
+    "message": "Method doesn't allow unregistered callers (callers without established identity). Please use API Key or other form of API consumer identity to call this
+2026-02-23 21:14:18,246 [INFO] bot —   Pair Clinics_Lucknow_India: 0 leads found, 0 new saved.
+2026-02-23 21:14:18,249 [INFO] bot — Processing pair: Restaurants_Hyderabad_India
+2026-02-23 21:14:18,251 [INFO] bot — Searching: 'Restaurants in Hyderabad, India'
+2026-02-23 21:14:18,340 [INFO] watchfiles.main — 2 changes detected
+2026-02-23 21:14:18,691 [INFO] bot — Stop requested — bot will halt after the current pair.
+2026-02-23 21:14:19,658 [ERROR] bot — Places API auth/config error 403 for 'Restaurants in Hyderabad, India': {
+  "error": {
+    "code": 403,
+    "message": "Method doesn't allow unregistered callers (callers without established identity). Please use API Key or other form of API consumer identity to call this
+2026-02-23 21:14:19,662 [INFO] bot —   Pair Restaurants_Hyderabad_India: 0 leads found, 0 new saved.
+2026-02-23 21:14:19,664 [INFO] bot — Stop flag detected — exiting run loop.
+2026-02-23 21:14:19,668 [INFO] bot — ============================================================
+2026-02-23 21:14:19,669 [INFO] bot — Run complete. New leads: 0 | API calls this run: 12
+2026-02-23 21:14:19,669 [INFO] bot — ============================================================
+2026-02-23 21:14:19,754 [INFO] watchfiles.main — 2 changes detected
+2026-02-23 21:14:24,737 [INFO] watchfiles.main — 2 changes detected
+2026-02-23 21:14:25,669 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:14:40,574 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:14:43,745 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:14:55,665 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:14:58,228 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:15:10,665 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:15:13,315 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:15:25,754 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:15:28,318 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:15:40,762 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:15:42,972 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:15:55,814 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:15:58,072 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:16:10,848 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:16:13,022 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:16:25,898 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:16:28,078 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:16:40,898 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:16:43,042 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:16:55,964 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:16:58,194 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:17:10,989 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:17:12,996 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:17:26,044 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:17:28,164 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:17:41,043 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:17:43,083 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:17:56,110 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:17:58,161 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:18:11,134 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:18:13,094 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:18:26,166 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:18:27,757 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:18:41,196 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:18:42,958 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:18:56,215 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:18:57,132 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:19:11,234 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:19:12,703 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:19:26,295 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:19:28,298 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:19:41,323 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:19:43,121 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:19:56,383 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:19:58,527 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:20:11,402 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:20:12,458 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:20:26,448 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:20:28,650 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:20:41,485 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:20:42,650 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:20:56,547 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:20:57,661 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:21:11,578 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:21:12,027 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:21:26,601 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:21:27,283 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:21:41,636 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:21:42,234 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:21:56,652 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:21:58,150 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:22:11,665 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:22:12,494 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:22:26,704 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:22:27,466 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:22:41,761 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:22:42,579 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:22:56,786 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:22:57,685 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:23:11,788 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:23:12,375 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:23:26,829 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:23:28,027 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:23:41,880 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:23:42,433 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:23:56,901 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:23:57,372 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:24:11,946 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:24:12,902 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:24:26,976 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:24:27,995 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:24:42,003 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:24:43,137 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:24:57,019 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:24:57,587 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:25:12,071 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:25:12,549 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:25:27,123 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:25:27,745 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:25:42,157 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:25:42,667 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:25:57,160 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:25:57,702 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:26:12,229 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:26:13,217 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:26:27,253 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:26:28,039 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:26:42,324 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:26:42,871 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:26:57,325 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:26:57,909 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:27:12,374 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:27:12,939 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:27:27,395 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:27:28,011 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:27:42,440 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:27:42,901 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:27:57,494 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:27:57,956 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:28:12,509 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:28:13,344 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:28:27,563 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:28:28,664 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:28:42,594 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:28:42,994 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:28:57,628 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:28:58,588 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:29:12,685 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:29:13,083 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:29:27,700 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:29:28,204 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:29:42,758 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:29:43,237 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:29:57,800 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:29:58,308 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:30:12,811 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:30:13,367 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:30:27,870 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:30:28,351 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:30:42,915 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:30:43,345 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:30:57,958 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:30:58,391 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:31:12,945 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:31:13,466 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:31:27,999 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:31:28,517 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:31:43,048 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:31:43,726 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:31:58,061 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:31:58,481 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:32:13,118 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:32:13,553 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:32:28,160 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:32:28,605 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:32:43,188 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:32:43,678 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:32:58,211 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:32:58,663 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:33:13,262 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:33:13,668 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:33:28,265 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:33:28,937 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:33:43,332 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:33:43,809 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:33:58,349 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:33:58,860 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:34:13,381 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:34:13,891 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:34:28,425 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:34:28,913 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:34:43,460 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:34:43,956 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:34:58,511 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:34:59,213 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:35:13,535 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:35:13,952 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:35:28,560 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:35:29,054 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:35:43,641 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:35:44,101 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:35:58,649 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:35:59,129 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:36:13,688 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:36:14,136 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:36:28,736 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:36:29,244 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:36:43,761 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:36:44,219 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:36:58,792 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:36:59,250 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:37:13,841 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:37:14,234 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:37:28,862 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:37:29,326 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:37:43,893 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:37:44,328 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:37:58,969 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:37:59,447 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:38:13,971 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:38:14,658 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:38:29,050 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:38:29,792 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:38:44,060 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:38:44,503 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:38:59,109 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:38:59,785 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:39:14,134 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:39:16,004 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:39:29,159 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:39:29,603 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:39:44,223 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:39:44,662 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:39:59,248 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:39:59,804 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:40:14,277 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:40:14,743 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:40:29,330 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:40:29,872 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:40:44,372 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:40:44,796 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:40:59,380 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:40:59,809 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:41:14,446 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:41:14,971 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:41:29,466 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:41:30,493 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:41:44,514 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:41:44,915 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:41:59,548 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:41:59,938 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:42:14,592 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:42:14,984 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:42:29,633 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:42:30,208 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:42:44,634 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:42:45,202 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:42:59,715 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:43:00,286 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:43:14,726 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:43:15,781 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:43:29,768 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:43:30,163 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:43:44,832 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:43:45,267 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:43:59,828 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:44:00,263 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:44:14,861 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:44:15,348 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:44:29,891 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:44:30,418 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:44:44,965 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:44:45,548 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:44:59,982 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:45:00,912 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:45:15,023 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:45:15,447 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:45:30,081 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:45:30,476 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:45:45,103 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:45:45,540 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:46:00,127 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:46:00,555 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:46:15,148 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:46:15,799 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:46:30,213 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:46:30,749 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:46:45,257 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:46:46,947 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:47:00,272 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:47:00,767 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:47:15,346 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:47:15,742 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:47:30,359 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:47:30,807 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:47:45,370 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:47:45,859 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:48:00,451 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:48:00,852 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:48:15,465 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:48:15,936 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:48:30,485 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:48:32,000 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:48:45,527 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:48:46,123 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:49:00,553 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:49:01,000 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:49:15,599 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:49:16,037 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:49:30,673 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:49:31,118 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:49:45,693 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:49:46,120 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:50:00,761 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:50:01,140 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:50:15,772 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:50:17,077 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:50:30,831 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:50:31,261 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:50:45,847 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:50:46,302 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:51:00,884 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:51:01,365 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:51:15,912 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:51:16,331 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:51:30,972 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:51:31,434 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:51:45,990 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:51:46,478 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:52:01,030 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:52:02,702 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:52:16,075 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:52:16,493 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:52:31,112 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:52:32,011 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:52:46,165 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:52:46,631 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:53:01,214 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:53:01,596 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:53:16,251 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:53:16,706 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:53:31,275 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:53:31,665 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:53:46,287 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:53:47,095 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:54:01,334 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:54:01,759 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:54:16,383 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:54:16,872 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:54:31,411 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:54:31,852 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:54:46,473 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:54:46,903 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:55:01,506 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:55:01,906 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:55:16,527 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:55:16,970 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:55:31,581 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:55:32,436 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:55:46,627 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:55:47,121 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:56:01,678 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:56:02,118 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:56:16,692 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:56:17,085 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:56:31,719 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:56:32,178 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:56:46,747 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:56:47,187 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:57:01,791 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:57:02,227 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:57:16,872 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:57:17,711 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:57:31,902 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:57:32,287 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:57:46,938 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:57:47,328 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:58:01,989 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:58:02,435 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:58:17,031 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:58:17,707 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:58:32,033 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:58:33,965 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:58:47,083 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:58:47,613 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:59:02,107 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:59:02,554 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:59:17,154 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:59:17,660 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:59:32,191 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:59:32,692 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:59:47,258 [INFO] watchfiles.main — 1 change detected
+2026-02-23 21:59:47,696 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:00:02,273 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:00:02,708 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:00:17,330 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:00:19,231 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:00:32,354 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:00:32,795 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:00:47,401 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:00:47,849 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:01:02,435 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:01:02,883 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:01:17,479 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:01:17,909 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:01:32,524 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:01:32,917 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:01:47,552 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:01:47,987 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:02:02,579 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:02:04,415 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:02:17,639 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:02:18,080 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:02:32,679 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:02:33,074 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:02:47,706 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:02:48,103 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:03:02,722 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:03:03,181 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:03:17,803 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:03:18,191 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:03:32,830 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:03:33,227 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:03:47,840 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:03:49,556 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:04:02,873 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:04:03,311 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:04:17,918 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:04:18,427 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:04:32,948 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:04:33,389 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:04:47,980 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:04:48,410 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:05:03,062 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:05:03,467 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:05:18,047 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:05:18,483 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:05:33,135 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:05:34,107 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:05:48,178 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:05:48,563 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:06:03,164 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:06:03,600 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:06:18,212 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:06:18,667 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:06:33,256 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:06:33,712 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:06:48,318 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:06:48,766 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:07:03,323 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:07:03,852 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:07:18,392 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:07:19,267 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:07:33,440 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:07:33,832 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:07:48,459 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:07:48,906 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:08:03,516 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:08:03,945 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:08:18,559 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:08:18,946 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:08:33,535 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:08:35,358 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:08:48,624 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:08:49,187 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:09:03,621 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:09:04,091 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:09:18,691 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:09:19,075 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:09:33,712 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:09:34,113 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:09:48,743 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:09:49,153 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:10:03,788 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:10:04,237 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:10:18,814 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:10:20,589 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:10:33,808 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:10:34,246 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:10:48,884 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:10:49,311 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:11:03,903 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:11:04,290 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:11:18,943 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:11:19,326 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:11:33,943 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:11:34,400 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:11:48,990 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:11:49,438 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:12:04,033 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:12:05,516 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:12:19,075 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:12:19,506 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:12:34,132 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:12:34,525 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:12:49,130 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:12:49,604 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:13:04,172 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:13:04,619 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:13:19,231 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:13:19,694 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:13:34,274 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:13:34,703 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:13:49,328 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:13:50,612 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:14:04,366 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:14:04,824 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:14:19,385 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:14:19,788 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:14:34,415 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:14:34,862 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:14:49,447 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:14:49,962 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:15:04,497 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:15:04,952 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:15:19,572 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:15:19,961 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:15:34,600 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:15:35,852 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:15:49,610 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:15:50,054 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:16:04,659 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:16:05,137 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:16:19,730 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:16:20,199 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:16:34,732 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:16:35,230 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:16:49,811 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:16:50,276 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:17:04,823 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:17:05,268 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:17:19,856 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:17:21,766 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:17:34,882 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:17:35,323 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:17:49,952 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:17:50,402 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:18:04,955 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:18:05,380 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:18:20,013 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:18:20,447 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:18:35,042 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:18:35,471 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:18:50,058 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:18:50,485 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:19:05,127 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:19:06,921 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:19:20,136 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:19:20,560 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:19:35,190 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:19:35,615 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:19:50,249 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:19:50,680 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:20:05,292 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:20:05,712 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:20:20,359 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:20:20,818 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:20:35,365 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:20:35,791 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:20:50,431 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:20:52,211 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:21:05,480 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:21:05,911 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:21:20,506 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:21:20,936 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:21:35,532 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:21:35,961 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:21:50,568 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:21:51,021 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:22:05,623 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:22:06,060 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:22:20,660 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:22:21,068 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:22:35,728 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:22:37,508 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:22:50,781 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:22:51,236 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:23:05,777 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:23:06,206 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:23:20,834 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:23:21,224 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:23:35,846 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:23:36,279 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:23:50,881 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:23:51,324 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:24:05,950 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:24:06,390 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:24:20,959 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:24:22,783 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:24:36,039 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:24:36,513 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:24:51,055 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:24:51,497 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:25:06,107 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:25:06,488 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:25:21,091 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:25:21,525 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:25:36,125 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:25:36,563 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:25:51,164 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:25:51,608 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:26:06,217 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:26:08,014 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:26:21,236 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:26:21,737 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:26:36,281 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:26:36,776 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:26:51,324 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:26:51,762 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:27:06,354 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:27:06,791 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:27:21,384 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:27:21,853 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:27:36,423 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:27:36,863 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:27:51,452 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:27:51,884 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:28:06,510 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:28:06,907 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:28:21,538 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:28:22,588 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:28:36,602 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:28:37,059 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:28:51,640 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:28:52,036 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:29:06,683 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:29:07,080 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:29:21,704 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:29:22,137 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:29:36,770 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:29:38,636 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:29:51,821 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:29:52,265 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:30:06,871 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:30:07,527 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:30:21,878 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:30:22,279 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:30:36,922 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:30:37,347 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:30:51,971 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:30:52,396 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:31:07,036 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:31:07,742 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:31:22,061 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:31:23,930 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:31:37,088 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:31:37,513 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:31:52,143 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:31:52,633 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:32:07,164 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:32:07,583 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:32:22,228 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:32:22,672 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:32:37,238 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:32:37,669 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:32:52,304 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:32:52,738 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:33:07,335 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:33:09,127 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:33:22,362 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:33:22,793 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:33:37,399 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:33:37,876 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:33:52,438 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:33:52,863 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:34:07,494 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:34:07,893 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:34:22,529 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:34:22,992 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:34:37,568 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:34:38,003 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:34:52,603 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:34:53,010 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:35:07,608 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:35:08,040 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:35:22,682 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:35:23,718 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:35:37,681 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:35:38,118 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:35:52,706 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:35:53,146 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:36:07,755 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:36:08,186 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:36:22,801 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:36:23,305 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:36:37,869 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:36:38,316 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:36:52,910 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:36:53,284 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:37:07,932 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:37:09,720 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:37:22,956 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:37:23,407 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:37:37,995 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:37:38,429 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:37:53,031 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:37:53,539 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:38:08,080 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:38:09,039 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:38:23,105 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:38:23,612 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:38:38,172 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:38:38,571 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:38:53,167 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:38:54,989 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:39:08,203 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:39:08,664 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:39:23,283 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:39:23,687 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:39:38,322 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:39:38,710 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:39:53,339 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:39:53,858 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:40:08,399 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:40:08,826 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:40:23,431 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:40:23,819 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:40:38,458 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:40:40,355 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:40:53,514 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:40:53,974 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:41:08,555 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:41:08,983 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:41:23,553 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:41:23,973 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:41:38,594 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:41:39,026 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:41:53,640 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:41:54,075 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:42:08,714 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:42:09,151 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:42:23,723 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:42:25,560 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:42:38,729 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:42:39,181 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:42:53,782 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:42:54,205 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:43:08,841 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:43:09,771 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:43:23,863 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:43:24,255 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:43:38,895 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:43:39,326 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:43:53,971 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:43:54,360 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:44:08,986 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:44:09,423 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:44:24,012 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:44:24,453 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:44:39,029 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:44:39,997 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:44:54,112 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:44:54,539 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:45:09,127 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:45:09,616 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:45:24,175 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:45:24,576 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:45:39,205 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:45:39,648 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:45:54,257 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:45:54,721 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:46:09,277 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:46:09,770 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:46:24,316 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:46:26,345 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:46:39,367 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:46:39,947 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:46:54,419 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:46:54,908 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:47:09,506 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:47:09,899 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:47:24,509 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:47:24,948 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:47:39,562 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:47:39,998 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:47:54,633 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:47:55,037 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:48:09,628 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:48:11,479 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:48:24,683 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:48:25,122 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:48:39,721 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:48:40,151 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:48:54,773 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:48:55,170 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:49:09,814 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:49:10,303 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:49:24,835 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:49:25,277 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:49:39,882 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:49:40,326 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:49:54,945 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:49:55,327 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:50:09,964 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:50:10,359 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:50:25,006 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:50:26,810 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:50:40,014 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:50:40,454 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:50:55,028 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:50:55,469 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:51:10,087 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:51:10,521 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:51:25,122 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:51:25,624 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:51:40,165 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:51:40,598 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:51:55,225 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:51:55,604 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:52:10,260 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:52:11,100 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:52:25,299 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:52:25,691 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:52:40,322 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:52:40,821 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:52:55,396 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:52:55,794 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:53:10,390 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:53:10,844 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:53:25,443 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:53:25,848 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:53:40,474 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:53:40,908 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:53:55,498 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:53:56,555 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:54:10,570 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:54:10,965 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:54:25,587 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:54:25,977 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:54:40,643 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:54:41,036 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:54:55,682 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:54:56,184 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:55:10,680 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:55:11,115 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:55:25,746 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:55:26,175 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:55:40,780 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:55:42,710 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:55:55,831 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:55:56,271 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:56:10,855 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:56:11,298 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:56:25,876 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:56:26,429 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:56:40,923 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:56:41,360 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:56:55,970 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:56:56,416 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:57:10,994 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:57:11,426 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:57:26,055 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:57:27,891 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:57:41,109 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:57:41,550 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:57:56,170 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:57:56,573 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:58:11,194 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:58:11,627 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:58:26,232 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:58:26,691 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:58:41,260 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:58:41,651 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:58:56,305 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:58:56,732 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:59:11,354 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:59:11,720 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:59:26,401 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:59:26,794 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:59:41,426 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:59:42,172 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:59:56,472 [INFO] watchfiles.main — 1 change detected
+2026-02-23 22:59:57,094 [INFO] watchfiles.main — 1 change detected
+2026-02-23 23:00:11,487 [INFO] watchfiles.main — 1 change detected
+2026-02-23 23:00:11,916 [INFO] watchfiles.main — 1 change detected
+2026-02-23 23:00:26,544 [INFO] watchfiles.main — 1 change detected
+2026-02-23 23:00:26,938 [INFO] watchfiles.main — 1 change detected
+2026-02-23 23:00:41,559 [INFO] watchfiles.main — 1 change detected
+2026-02-23 23:00:42,011 [INFO] watchfiles.main — 1 change detected
+2026-02-23 23:00:56,600 [INFO] watchfiles.main — 1 change detected
+2026-02-23 23:00:57,039 [INFO] watchfiles.main — 1 change detected
+2026-02-23 23:01:11,669 [INFO] watchfiles.main — 1 change detected
+2026-02-23 23:01:12,063 [INFO] watchfiles.main — 1 change detected
+2026-02-23 23:01:26,717 [INFO] watchfiles.main — 1 change detected
+2026-02-23 23:01:28,509 [INFO] watchfiles.main — 1 change detected
+2026-02-23 23:01:41,726 [INFO] watchfiles.main — 1 change detected
+2026-02-23 23:01:42,252 [INFO] watchfiles.main — 1 change detected
+2026-02-23 23:01:56,758 [INFO] watchfiles.main — 1 change detected
+2026-02-23 23:01:57,202 [INFO] watchfiles.main — 1 change detected
+2026-02-23 23:02:11,823 [INFO] watchfiles.main — 1 change detected
+2026-02-23 23:02:12,216 [INFO] watchfiles.main — 1 change detected
+2026-02-23 23:02:26,850 [INFO] watchfiles.main — 1 change detected
+2026-02-23 23:02:27,361 [INFO] watchfiles.main — 1 change detected
+2026-02-23 23:02:41,915 [INFO] watchfiles.main — 1 change detected
+2026-02-23 23:02:42,312 [INFO] watchfiles.main — 1 change detected
+2026-02-23 23:02:56,949 [INFO] watchfiles.main — 1 change detected
+2026-02-23 23:02:57,383 [INFO] watchfiles.main — 1 change detected
+2026-02-23 23:03:11,994 [INFO] watchfiles.main — 1 change detected
+2026-02-23 23:03:12,399 [INFO] watchfiles.main — 1 change detected
+2026-02-23 23:03:27,054 [INFO] watchfiles.main — 1 change detected
+2026-02-23 23:03:27,499 [INFO] watchfiles.main — 1 change detected
+2026-02-23 23:03:42,090 [INFO] watchfiles.main — 1 change detected
+2026-02-23 23:03:42,876 [INFO] watchfiles.main — 1 change detected
+2026-02-23 23:03:57,133 [INFO] watchfiles.main — 1 change detected
+2026-02-23 23:03:57,576 [INFO] watchfiles.main — 1 change detected
+2026-02-23 23:04:12,180 [INFO] watchfiles.main — 1 change detected
+2026-02-23 23:04:12,564 [INFO] watchfiles.main — 1 change detected
+2026-02-23 23:04:27,164 [INFO] watchfiles.main — 1 change detected
+2026-02-23 23:04:27,619 [INFO] watchfiles.main — 1 change detected
+2026-02-23 23:04:42,256 [INFO] watchfiles.main — 1 change detected
+2026-02-23 23:04:42,645 [INFO] watchfiles.main — 1 change detected
+2026-02-23 23:04:57,265 [INFO] watchfiles.main — 1 change detected
+2026-02-23 23:04:57,716 [INFO] watchfiles.main — 1 change detected
+2026-02-23 23:05:12,310 [INFO] watchfiles.main — 1 change detected
+2026-02-23 23:05:12,742 [INFO] watchfiles.main — 1 change detected
+2026-02-23 23:05:27,346 [INFO] watchfiles.main — 1 change detected
+2026-02-23 23:05:28,608 [INFO] watchfiles.main — 1 change detected
+2026-02-23 23:05:42,405 [INFO] watchfiles.main — 1 change detected
+2026-02-23 23:05:42,839 [INFO] watchfiles.main — 1 change detected
+2026-02-23 23:05:57,423 [INFO] watchfiles.main — 1 change detected
+2026-02-23 23:05:57,864 [INFO] watchfiles.main — 1 change detected
+2026-02-23 23:06:12,502 [INFO] watchfiles.main — 1 change detected
+2026-02-23 23:06:12,880 [INFO] watchfiles.main — 1 change detected
+2026-02-23 23:06:27,532 [INFO] watchfiles.main — 1 change detected
+2026-02-23 23:06:27,920 [INFO] watchfiles.main — 1 change detected
+2026-02-23 23:06:42,524 [INFO] watchfiles.main — 1 change detected
+2026-02-23 23:06:42,949 [INFO] watchfiles.main — 1 change detected
+2026-02-23 23:06:57,619 [INFO] watchfiles.main — 1 change detected
+2026-02-23 23:06:58,374 [INFO] watchfiles.main — 1 change detected

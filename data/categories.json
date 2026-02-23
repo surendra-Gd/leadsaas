@@ -1,0 +1,82 @@
+[
+  {
+    "id": "c1",
+    "name": "Salons",
+    "emoji": "✂️",
+    "color": "#8b5cf6",
+    "count": 0,
+    "active": true
+  },
+  {
+    "id": "c2",
+    "name": "Bakeries",
+    "emoji": "🥐",
+    "color": "#f59e0b",
+    "count": 0,
+    "active": true
+  },
+  {
+    "id": "c3",
+    "name": "Clinics",
+    "emoji": "🏥",
+    "color": "#10b981",
+    "count": 0,
+    "active": true
+  },
+  {
+    "id": "c4",
+    "name": "Restaurants",
+    "emoji": "🍽️",
+    "color": "#ef4444",
+    "count": 0,
+    "active": true
+  },
+  {
+    "id": "c5",
+    "name": "Tailors",
+    "emoji": "🧵",
+    "color": "#3b82f6",
+    "count": 0,
+    "active": true
+  },
+  {
+    "id": "c6",
+    "name": "Photographers",
+    "emoji": "📷",
+    "color": "#ec4899",
+    "count": 0,
+    "active": false
+  },
+  {
+    "id": "c7",
+    "name": "Plumbers",
+    "emoji": "🔧",
+    "color": "#0ea5e9",
+    "count": 0,
+    "active": true
+  },
+  {
+    "id": "c8",
+    "name": "Electricians",
+    "emoji": "⚡",
+    "color": "#f97316",
+    "count": 0,
+    "active": true
+  },
+  {
+    "id": "c9",
+    "name": "Tutors",
+    "emoji": "📚",
+    "color": "#06b6d4",
+    "count": 0,
+    "active": false
+  },
+  {
+    "id": "c10",
+    "name": "Gyms",
+    "emoji": "🏋️",
+    "color": "#84cc16",
+    "count": 0,
+    "active": true
+  }
+]
