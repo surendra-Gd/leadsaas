@@ -1,0 +1,14 @@
+# API layer
+fastapi>=0.111.0
+uvicorn[standard]>=0.29.0
+pydantic>=2.7.0
+
+# HTTP client
+requests>=2.31.0
+
+# Google Sheets
+gspread>=6.0.0
+google-auth>=2.22.0
+
+# Scheduling (optional — for standalone cron-style runs)
+schedule>=1.2.2

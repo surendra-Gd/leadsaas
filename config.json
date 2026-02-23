@@ -1,0 +1,30 @@
+{
+  "google_places_api_key": "",
+  "google_sheet_id": "",
+  "service_account_file": "service_account.json",
+  "use_google_sheets": true,
+  "business_categories": [
+    "Salons",
+    "Bakeries",
+    "Clinics",
+    "Restaurants",
+    "Tailors",
+    "Photographers",
+    "Plumbers",
+    "Electricians",
+    "Tutors",
+    "Gyms"
+  ],
+  "locations": [
+    "Hyderabad, India",
+    "Chennai, India",
+    "Pune, India",
+    "Jaipur, India",
+    "Lucknow, India"
+  ],
+  "daily_lead_limit": 30,
+  "max_results_per_query": 20,
+  "max_pages_per_query": 3,
+  "rate_limit_delay": 1.0,
+  "active_city": ""
+}
