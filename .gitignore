@@ -1,0 +1,76 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+pip-wheel-metadata/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Virtual Environments
+venv/
+ENV/
+env/
+.venv
+env.bak/
+venv.bak/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*.swn
+.DS_Store
+*.sublime-project
+*.sublime-workspace
+
+# Config & Credentials (CRITICAL - NEVER COMMIT)
+config.json
+data/config.json
+data/leads.csv
+data/status.json
+data/metrics.json
+data/templates.json
+data/categories.json
+data/api.log
+*.log
+logs/
+.env
+.env.local
+*.env
+credentials.json
+secrets.json
+service-account.json
+
+# Runtime
+*.pid
+.cache/
+.pytest_cache/
+.coverage
+htmlcov/
+
+# OS
+.DS_Store
+Thumbs.db
+*.tmp
+
+# Local testing
+test_*.json
+temp/
